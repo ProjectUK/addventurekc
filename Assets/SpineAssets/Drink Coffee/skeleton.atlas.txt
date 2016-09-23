@@ -1,0 +1,75 @@
+
+skeleton.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+crow_0000_mug
+  rotate: false
+  xy: 320, 194
+  size: 151, 85
+  orig: 151, 85
+  offset: 0, 0
+  index: -1
+crow_0001_smoke
+  rotate: false
+  xy: 320, 281
+  size: 183, 83
+  orig: 183, 83
+  offset: 0, 0
+  index: -1
+crow_0002_shoulder
+  rotate: false
+  xy: 320, 366
+  size: 161, 139
+  orig: 161, 139
+  offset: 0, 0
+  index: -1
+crow_0003_googles
+  rotate: false
+  xy: 2, 2
+  size: 207, 179
+  orig: 207, 179
+  offset: 0, 0
+  index: -1
+crow_0004_scraf
+  rotate: false
+  xy: 211, 71
+  size: 243, 110
+  orig: 243, 110
+  offset: 0, 0
+  index: -1
+crow_0006_plane
+  rotate: false
+  xy: 2, 183
+  size: 316, 322
+  orig: 316, 322
+  offset: 0, 0
+  index: -1
+
+skeleton2.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Cling2
+  rotate: false
+  xy: 2, 214
+  size: 280, 280
+  orig: 280, 280
+  offset: 0, 0
+  index: -1
+HealingFX
+  rotate: false
+  xy: 2, 2
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+crow_0005_body
+  rotate: false
+  xy: 284, 409
+  size: 139, 85
+  orig: 139, 85
+  offset: 0, 0
+  index: -1

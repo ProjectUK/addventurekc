@@ -1,0 +1,131 @@
+fileFormatVersion: 2
+guid: 52e683f30aee74dc39588c38a22669e2
+timeCreated: 1465482998
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: banner
+    21300002: building
+    21300004: open
+    21300006: roof
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: banner
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 141
+        width: 204
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -102, y: 20}
+        - {x: -102, y: -20}
+        - {x: -1, y: -20}
+        - {x: -1, y: 20}
+      - - {x: 1, y: 20}
+        - {x: 1, y: -20}
+        - {x: 102, y: -20}
+        - {x: 102, y: 20}
+    - name: building
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 278
+        height: 265
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -33, y: 33.5}
+        - {x: -35, y: 15.5}
+        - {x: -35, y: -33.5}
+        - {x: 35, y: -33.5}
+        - {x: 35, y: 33.5}
+    - name: open
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 266
+        width: 160
+        height: 328
+      alignment: 9
+      pivot: {x: 0.21159875, y: 0.029771013}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 31.536049, y: 79.55878}
+        - {x: 29.536049, y: 80.55878}
+        - {x: -8.46395, y: 80.55878}
+        - {x: -8.46395, y: -2.4412231}
+        - {x: 10.53605, y: -2.4412231}
+        - {x: 24.536049, y: 24.558777}
+        - {x: 25.536049, y: 34.558777}
+        - {x: 31.536049, y: 52.558777}
+    - name: roof
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 0
+        width: 215
+        height: 140
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -26.75, y: 17.5}
+        - {x: -26.75, y: -17.5}
+        - {x: 28.25, y: -17.5}
+        - {x: 28.25, y: 15.5}
+        - {x: 27.25, y: 17.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

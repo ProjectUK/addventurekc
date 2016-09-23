@@ -1,0 +1,34 @@
+
+skeleton.png
+size: 4096,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+explosionnnn_0000_Linework1
+  rotate: false
+  xy: 2, 2
+  size: 732, 1075
+  orig: 732, 1075
+  offset: 0, 0
+  index: -1
+explosionnnn_0001_Layer14
+  rotate: false
+  xy: 736, 2
+  size: 730, 848
+  orig: 730, 848
+  offset: 0, 0
+  index: -1
+explosionnnn_0002_Layer15
+  rotate: false
+  xy: 1470, 2
+  size: 697, 786
+  orig: 697, 786
+  offset: 0, 0
+  index: -1
+uasep
+  rotate: false
+  xy: 2204, 2
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1

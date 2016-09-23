@@ -1,0 +1,550 @@
+fileFormatVersion: 2
+guid: 16fdca8b2a49741c58ebd2972982ca70
+timeCreated: 1464965666
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: L_puff
+    21300002: R_puff
+    21300004: circlebase
+    21300006: cup bellow empty 1
+    21300008: cup bellow empty 2
+    21300010: cup coffee fill 1
+    21300012: cup coffee fill 2
+    21300014: cup top  right 1
+    21300016: cup top  right 2
+    21300018: cup top left 1
+    21300020: cup top left 2
+    21300022: frontface
+    21300024: frother 1
+    21300026: frother 2
+    21300028: gauge_base
+    21300030: gauge_top
+    21300032: machine_base
+    21300034: machine_buttons
+    21300036: needle
+    21300038: start burst
+    21300040: tampered 1
+    21300042: tampered 2
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: L_puff
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 2042
+        width: 147
+        height: 141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 18.5, y: 17.5}
+        - {x: 15.5, y: 18.5}
+        - {x: -5.5, y: 18.5}
+        - {x: -18.5, y: 6.5}
+        - {x: -18.5, y: -13.5}
+        - {x: -7.5, y: -17.5}
+        - {x: 11.5, y: -17.5}
+        - {x: 17.5, y: -10.5}
+        - {x: 19.5, y: -6.5}
+        - {x: 19.5, y: 13.5}
+    - name: R_puff
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 2042
+        width: 153
+        height: 140
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -19.5, y: 18.5}
+        - {x: -19.5, y: -15.5}
+        - {x: -17.5, y: -17.5}
+        - {x: 14.5, y: -17.5}
+        - {x: 19.5, y: -14.5}
+        - {x: 19.5, y: 8.5}
+        - {x: 3.5, y: 18.5}
+    - name: circlebase
+      rect:
+        serializedVersion: 2
+        x: 989
+        y: 0
+        width: 943
+        height: 943
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15.1875, y: 29.5}
+        - {x: -29.1875, y: 25.5}
+        - {x: -29.1875, y: -20.5}
+        - {x: -26.1875, y: -19.5}
+        - {x: -18.1875, y: -29.5}
+        - {x: 26.8125, y: -29.5}
+        - {x: 30.8125, y: -28.5}
+        - {x: 30.8125, y: 22.5}
+        - {x: 20.8125, y: 29.5}
+    - name: cup bellow empty 1
+      rect:
+        serializedVersion: 2
+        x: 1696
+        y: 1842
+        width: 267
+        height: 153
+      alignment: 9
+      pivot: {x: 0.56059694, y: 0.12824142}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -33.54486, y: 34.219757}
+        - {x: -37.54486, y: 33.219757}
+        - {x: -37.54486, y: 4.219757}
+        - {x: -32.54486, y: -3.780243}
+        - {x: -28.54486, y: -4.780243}
+        - {x: 15.455139, y: -4.780243}
+        - {x: 29.45514, y: 5.219757}
+        - {x: 29.45514, y: 34.219757}
+    - name: cup bellow empty 2
+      rect:
+        serializedVersion: 2
+        x: 1389
+        y: 1850
+        width: 268
+        height: 153
+      alignment: 9
+      pivot: {x: 0.44427136, y: 0.21389726}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -30.016174, y: 30.94342}
+        - {x: -30.016174, y: 3.9434204}
+        - {x: -18.016174, y: -8.05658}
+        - {x: 18.983826, y: -8.05658}
+        - {x: 37.983826, y: 4.9434204}
+        - {x: 37.983826, y: 22.94342}
+        - {x: 26.983826, y: 30.94342}
+    - name: cup coffee fill 1
+      rect:
+        serializedVersion: 2
+        x: 1181
+        y: 944
+        width: 191
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: cup coffee fill 2
+      rect:
+        serializedVersion: 2
+        x: 989
+        y: 944
+        width: 191
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: cup top  right 1
+      rect:
+        serializedVersion: 2
+        x: 1731
+        y: 1308
+        width: 257
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15.75, y: 21.5}
+        - {x: -30.75, y: 15.5}
+        - {x: -31.75, y: 12.5}
+        - {x: -31.75, y: -8.5}
+        - {x: -23.75, y: -19.5}
+        - {x: -9.75, y: -21.5}
+        - {x: 33.25, y: -21.5}
+        - {x: 33.25, y: 19.5}
+        - {x: 22.25, y: 21.5}
+    - name: cup top  right 2
+      rect:
+        serializedVersion: 2
+        x: 858
+        y: 1850
+        width: 260
+        height: 162
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -28.5, y: 21}
+        - {x: -32.5, y: 14}
+        - {x: -32.5, y: -12}
+        - {x: -14.5, y: -20}
+        - {x: 33.5, y: -20}
+        - {x: 33.5, y: 13}
+        - {x: 20.5, y: 21}
+    - name: cup top left 1
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 2042
+        width: 249
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 18, y: 19.5}
+        - {x: -22, y: 19.5}
+        - {x: -30, y: 12.5}
+        - {x: -31, y: 8.5}
+        - {x: -31, y: -18.5}
+        - {x: 28, y: -18.5}
+        - {x: 32, y: -15.5}
+        - {x: 32, y: 17.5}
+    - name: cup top left 2
+      rect:
+        serializedVersion: 2
+        x: 1119
+        y: 1850
+        width: 269
+        height: 155
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13.25, y: 20.5}
+        - {x: -33.25, y: 2.5}
+        - {x: -33.25, y: -15.5}
+        - {x: -29.25, y: -19.5}
+        - {x: 34.75, y: -19.5}
+        - {x: 34.75, y: 10.5}
+        - {x: 24.75, y: 20.5}
+    - name: frontface
+      rect:
+        serializedVersion: 2
+        x: 858
+        y: 989
+        width: 872
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -23.375, y: 17.3125}
+        - {x: -27.375, y: 10.3125}
+        - {x: -27.375, y: -12.6875}
+        - {x: -25.375, y: -15.6875}
+        - {x: 28.625, y: -15.6875}
+        - {x: 28.625, y: 15.3125}
+        - {x: 24.625, y: 17.3125}
+    - name: frother 1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2416
+        width: 151
+        height: 226
+      alignment: 9
+      pivot: {x: 1.0695364, y: 0.7477876}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8.5, y: 14.5}
+        - {x: -11.5, y: 12.5}
+        - {x: -40.5, y: -20.5}
+        - {x: -40.5, y: -41.5}
+        - {x: -39.5, y: -42.5}
+        - {x: -20.5, y: -42.5}
+        - {x: -2.5, y: -19.5}
+        - {x: -2.5, y: 14.5}
+    - name: frother 2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2209
+        width: 173
+        height: 206
+      alignment: 9
+      pivot: {x: -0.0433526, y: 0.83980584}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1.5, y: 8.75}
+        - {x: 1.5, y: -26.25}
+        - {x: 11.5, y: -43.25}
+        - {x: 45.5, y: -43.25}
+        - {x: 45.5, y: -1.25}
+        - {x: 21.5, y: 8.75}
+    - name: gauge_base
+      rect:
+        serializedVersion: 2
+        x: 1696
+        y: 1502
+        width: 322
+        height: 339
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -36.5, y: 43.5}
+        - {x: -40.5, y: 34.5}
+        - {x: -40.5, y: -34.5}
+        - {x: -28.5, y: -42.5}
+        - {x: 23.5, y: -42.5}
+        - {x: 40.5, y: -23.5}
+        - {x: 40.5, y: 28.5}
+        - {x: 20.5, y: 43.5}
+    - name: gauge_top
+      rect:
+        serializedVersion: 2
+        x: 1731
+        y: 989
+        width: 284
+        height: 167
+      alignment: 9
+      pivot: {x: 0.51760566, y: 0.119760476}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14.5, y: 37.125}
+        - {x: -25.5, y: 31.125}
+        - {x: -34.5, y: 23.125}
+        - {x: -36.5, y: 16.125}
+        - {x: -36.5, y: -2.875}
+        - {x: -35.5, y: -4.875}
+        - {x: 26.5, y: -4.875}
+        - {x: 35.5, y: -1.875}
+        - {x: 35.5, y: 25.125}
+        - {x: 21.5, y: 37.125}
+    - name: machine_base
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 989
+        width: 857
+        height: 1052
+      alignment: 9
+      pivot: {x: 0.4673279, y: 0.05513308}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -24.25, y: 63.5625}
+        - {x: -25.25, y: 58.5625}
+        - {x: -25.25, y: 1.5625}
+        - {x: -23.25, y: -3.4375}
+        - {x: 28.75, y: -3.4375}
+        - {x: 28.75, y: 57.5625}
+        - {x: 27.75, y: 63.5625}
+    - name: machine_buttons
+      rect:
+        serializedVersion: 2
+        x: 858
+        y: 1502
+        width: 837
+        height: 347
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -76.5, y: -12.5}
+        - {x: -86.5, y: -12.5}
+        - {x: -88.5, y: -13.5}
+        - {x: -94.5, y: -19.5}
+        - {x: -94.5, y: -30.5}
+        - {x: -92.5, y: -37.5}
+        - {x: -87.5, y: -43.5}
+        - {x: -65.5, y: -43.5}
+        - {x: -65.5, y: -24.5}
+        - {x: -68.5, y: -15.5}
+      - - {x: 72.5, y: -9.5}
+        - {x: 68.5, y: -12.5}
+        - {x: 68.5, y: -38.5}
+        - {x: 71.5, y: -42.5}
+        - {x: 85.5, y: -42.5}
+        - {x: 93.5, y: -39.5}
+        - {x: 94.5, y: -38.5}
+        - {x: 94.5, y: -15.5}
+        - {x: 91.5, y: -9.5}
+      - - {x: -60.5, y: -6.5}
+        - {x: -64.5, y: -13.5}
+        - {x: -64.5, y: -28.5}
+        - {x: -58.5, y: -39.5}
+        - {x: -38.5, y: -39.5}
+        - {x: -38.5, y: -12.5}
+        - {x: -43.5, y: -6.5}
+      - - {x: 44.5, y: -3.5}
+        - {x: 40.5, y: -9.5}
+        - {x: 39.5, y: -13.5}
+        - {x: 39.5, y: -31.5}
+        - {x: 44.5, y: -36.5}
+        - {x: 57.5, y: -36.5}
+        - {x: 63.5, y: -32.5}
+        - {x: 66.5, y: -25.5}
+        - {x: 66.5, y: -7.5}
+        - {x: 65.5, y: -3.5}
+      - - {x: -94.5, y: 41.5}
+        - {x: -104.5, y: 37.5}
+        - {x: -104.5, y: 5.5}
+        - {x: -92.5, y: -9.5}
+        - {x: -71.5, y: -9.5}
+        - {x: -58.5, y: -4.5}
+        - {x: -58.5, y: 32.5}
+        - {x: -63.5, y: 41.5}
+      - - {x: 64.5, y: 44.5}
+        - {x: 58.5, y: 42.5}
+        - {x: 58.5, y: -0.5}
+        - {x: 60.5, y: -5.5}
+        - {x: 90.5, y: -5.5}
+        - {x: 105.5, y: 13.5}
+        - {x: 105.5, y: 39.5}
+        - {x: 100.5, y: 44.5}
+      - - {x: -59.5, y: 44.5}
+        - {x: -58.5, y: 41.5}
+        - {x: -48.5, y: 41.5}
+        - {x: -46.5, y: 43.5}
+        - {x: -46.5, y: 44.5}
+      - - {x: -17.5, y: 44.5}
+        - {x: -16.5, y: 41.5}
+        - {x: -2.5, y: 41.5}
+        - {x: -0.5, y: 43.5}
+        - {x: -0.5, y: 44.5}
+      - - {x: 51.5, y: 44.5}
+        - {x: 52.5, y: 41.5}
+        - {x: 62.5, y: 41.5}
+        - {x: 64.5, y: 43.5}
+        - {x: 64.5, y: 44.5}
+    - name: needle
+      rect:
+        serializedVersion: 2
+        x: 1933
+        y: 0
+        width: 55
+        height: 162
+      alignment: 9
+      pivot: {x: 0.48181817, y: 0.19753087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8.5, y: 130}
+        - {x: -26.5, y: 45}
+        - {x: -26.5, y: -28}
+        - {x: -21.5, y: -32}
+        - {x: 19.5, y: -32}
+        - {x: 28.5, y: -23}
+        - {x: 28.5, y: 39}
+        - {x: 16.5, y: 130}
+    - name: start burst
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 996
+        height: 996
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 24.5, y: -24.5}
+        - {x: 28.5, y: -25.5}
+        - {x: 31.5, y: -24.5}
+        - {x: 31.5, y: 21.5}
+        - {x: 29.5, y: 24.5}
+        - {x: 26.5, y: 24.5}
+        - {x: 23.5, y: 22.5}
+        - {x: 24.5, y: 26.5}
+        - {x: 24.5, y: 28.5}
+        - {x: 21.5, y: 31.5}
+        - {x: -31.5, y: 31.5}
+        - {x: -31.5, y: -30.5}
+        - {x: -30.5, y: -31.5}
+        - {x: 23.5, y: -31.5}
+        - {x: 24.5, y: -29.5}
+        - {x: 24.5, y: -27.5}
+        - {x: 21.5, y: -23.5}
+      - - {x: 24.5, y: 31.5}
+        - {x: 25.5, y: 28.5}
+        - {x: 31.5, y: 28.5}
+        - {x: 31.5, y: 31.5}
+    - name: tampered 1
+      rect:
+        serializedVersion: 2
+        x: 1731
+        y: 1157
+        width: 292
+        height: 150
+      alignment: 9
+      pivot: {x: 0.8287671, y: 0.8066667}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -42.25, y: 7.75}
+        - {x: -57.25, y: 4.75}
+        - {x: -60.25, y: -2.25}
+        - {x: -60.25, y: -27.25}
+        - {x: -57.25, y: -30.25}
+        - {x: -18.25, y: -30.25}
+        - {x: -4.25, y: -28.25}
+        - {x: 13.75, y: -13.25}
+        - {x: 13.75, y: 7.75}
+    - name: tampered 2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2042
+        width: 241
+        height: 166
+      alignment: 9
+      pivot: {x: 0.24273859, y: 0.8012048}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15, y: 9}
+        - {x: -15, y: -22}
+        - {x: 3, y: -33}
+        - {x: 41, y: -33}
+        - {x: 46, y: -27}
+        - {x: 46, y: 9}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
