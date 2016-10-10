@@ -5,7 +5,7 @@ public class GameSaveManager : MonoBehaviour {
 
 	const string GAME_SAVE_MANAGER_DB_VERSION = "1";
 
-	const string DB_VERSION = "tkbd_db_version";
+	const string DB_VERSION = "CROWS_COFFEE";
 	const string FIRST_PLAY = "first_play";
 	const string COIN = "coin";
 	const string LANGUAGE = "language"; 
@@ -15,19 +15,8 @@ public class GameSaveManager : MonoBehaviour {
 
 	const string CONTROL = "control";	//0 = tilt, 1 = swipe
 
-	public const string CAMERA = "item_camera";
-
-	const string WORD_KEY_PREFIX 	= "bd~";
 	const string SHOP_ITEM_KEY_PREFIX 	= "shop~";
 
-	[HideInInspector]
-	public string[] TAJAU_CODES = {
-		"tajau1",
-		"tajau2",
-       	"tajau3",
-       	"tajau4",
-       	"tajau5"
-	};
 	
 
 	public enum GameLanguages
@@ -159,35 +148,6 @@ public class GameSaveManager : MonoBehaviour {
 			// don't have any language yet, just throw default language
 			return GameLanguages.INGGRIS;
 		}
-	}
-
-	#endregion
-
-	#region Dictionary
-	public void UnlockWord (string word) {
-		// 1 means unlocked
-		PlayerPrefs.SetInt (WORD_KEY_PREFIX + word.ToUpper(), 1);
-	}
-
-	public string GetFormattedWord(string word) {
-		return WORD_KEY_PREFIX + word.ToUpper ();
-	}
-
-	public void LockWord (string word) {
-		PlayerPrefs.DeleteKey (WORD_KEY_PREFIX + word.ToUpper());
-	}
-
-	public bool IsWordUnlocked(string word) {
-		bool isUnlocked = false;
-
-		// get the word if it's exist and already unlocked
-		if (PlayerPrefs.HasKey(WORD_KEY_PREFIX + word.ToUpper())) {
-			if ( PlayerPrefs.GetInt (WORD_KEY_PREFIX + word.ToUpper()) == 1) {
-				isUnlocked = true;
-			}
-		}
-
-		return isUnlocked;
 	}
 
 	#endregion
