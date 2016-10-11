@@ -29,6 +29,8 @@ public class EnemyPatternSpawnerController : EnemyController {
 	// Holder of all enemies on this pattern
 	public List<EnemyPatternModel> EnemyList = new List<EnemyPatternModel>();
 
+	List<EnemyController> SpawnedEnemies = new List<EnemyController>();
+
 	private int _VisibleEnemiesCount = 0;
 
 	bool AllEnemiesSpawned = false;
@@ -40,6 +42,7 @@ public class EnemyPatternSpawnerController : EnemyController {
 	{
 		AllEnemiesSpawned = false;
 
+		SpawnedEnemies.Clear ();
 		_VisibleEnemiesCount = 0;
 
 		SpawnEnemy();
@@ -47,12 +50,11 @@ public class EnemyPatternSpawnerController : EnemyController {
 
 		CurrentHealth = EnemyList.Count;
 		MaxHealth = EnemyList.Count;
+
+
 	}
 
 	void SpawnEnemy() {
-
-		//DEBUG. Wait some time
-//		yield return new WaitForSeconds(1);
 
 		for (int i = 0; i < EnemyList.Count; i++) {
 			EnemyPatternModel enemyPattern = EnemyList [i];
@@ -63,6 +65,9 @@ public class EnemyPatternSpawnerController : EnemyController {
 			if (enemyGO != null) {
 				EnemyController ec = enemyGO.GetComponent<EnemyController> ();
 				if (ec != null) {
+
+					SpawnedEnemies.Add (ec);
+
 					// make it not moving by its speed so we can override its pattern movement
 					ec.IsMoving = false;
 					ec.gameObject.SetActive (true);
@@ -124,6 +129,8 @@ public class EnemyPatternSpawnerController : EnemyController {
 		}
 		yield return null;		
 
+		SpawnedEnemies.Remove (ec);
+
 		ec.gameObject.SetActive (false);
 
 		// the end of its movement
@@ -133,7 +140,10 @@ public class EnemyPatternSpawnerController : EnemyController {
 
 	IEnumerator CheckPatternEnd() {
 		
-		while (_VisibleEnemiesCount > 0 || !AllEnemiesSpawned)
+//		while (_VisibleEnemiesCount > 0 || !AllEnemiesSpawned)
+//			yield return null;
+
+		while (CountAliveEnemies() > 0 || !AllEnemiesSpawned)
 			yield return null;
 
 		if (OnDead != null) {
@@ -150,6 +160,20 @@ public class EnemyPatternSpawnerController : EnemyController {
 		moveEnemyRoutines.Clear ();
 
 		this.gameObject.SetActive (false);
+	}
+
+	int CountAliveEnemies() {
+		int aliveEnemies = 0;
+		for (int i = 0; i < SpawnedEnemies.Count; i++){
+			if (SpawnedEnemies[i] != null) {
+				if (SpawnedEnemies[i].gameObject.activeInHierarchy) {
+					aliveEnemies++;
+				}
+			}
+		}
+
+		return aliveEnemies;
+
 	}
 		
 }

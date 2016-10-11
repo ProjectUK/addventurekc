@@ -150,7 +150,7 @@ public class EntitySpawner : MonoBehaviour {
 		
 		int randomNum = Random.Range (0, 101);
 
-		SpawnModel model = GetDesiredRange (randomNum);
+		SpawnModel model = GetDesiredRange (SpawnedModel, randomNum);
 
 		if (model != null) {
 			string poolName = model.PoolName;
@@ -333,7 +333,8 @@ public class EntitySpawner : MonoBehaviour {
 		}
 	}
 
-	protected SpawnModel GetDesiredRange(int value) {
+	// Load SpawnModel using its probability range
+	protected SpawnModel GetDesiredRange(SpawnModel[] targetArray, int value) {
 		int i = 0;
 
 		while (i < SpawnedModel.Length) {

@@ -4,6 +4,8 @@ using System.Collections;
 public class BulletController : MonoBehaviour {
 	public Vector2 Speed = new Vector2(0,10);
 
+	public bool AffectedByLevelSpeed;
+
 	// Use this for initialization
 	void Start () {
 		EventManager.Instance.AddListener<HideBulletEvent> (OnBulletHideEvent);
@@ -11,9 +13,17 @@ public class BulletController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		transform.Translate (
-			Speed.x * Time.deltaTime * Blackboard.Instance.BulletSpeedMultiplier,
-			Speed.y * Time.deltaTime * Blackboard.Instance.BulletSpeedMultiplier, 0);
+
+		if (AffectedByLevelSpeed) {
+			transform.Translate (
+				Speed.x * Time.deltaTime * Blackboard.Instance.BulletSpeedMultiplier,
+				Speed.y * Time.deltaTime * Blackboard.Instance.BulletSpeedMultiplier, 0);
+		} else {
+			transform.Translate (
+				Speed.x * Time.deltaTime,
+				Speed.y * Time.deltaTime, 0);
+		}
+
 
 		// HARDCODED
 		// TODO: Specify automatic out of screen?
