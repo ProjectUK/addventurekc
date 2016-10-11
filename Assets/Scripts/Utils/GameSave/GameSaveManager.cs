@@ -37,6 +37,7 @@ public class GameSaveManager : MonoBehaviour {
 		}
 	}
 
+	public bool DoReset;
 
 	// Use this for initialization
 	void Start () {
@@ -45,7 +46,10 @@ public class GameSaveManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (DoReset) {
+			PlayerPrefs.DeleteAll ();
+			DoReset = false;
+		}
 	}
 
 

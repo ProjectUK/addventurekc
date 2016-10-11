@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using GooglePlayGames;
+using UnityEngine.SocialPlatforms;
 
 public class AircraftGameController : MonoBehaviour {
 
@@ -272,6 +274,15 @@ public class AircraftGameController : MonoBehaviour {
 	void OnGameLoseEvent(GameLoseEvent eve) {
 		IsPlaying = false;
 		AircraftObject.Explode ();
+
+		// submit score
+		// TODO: USe GPManager
+		Social.ReportScore ((long)TotalScore, GPGSids.leaderboard_high_scores, (bool success) => {
+			// handle success/failure	
+		});
+
+
+
 	}
 
 	void OnCafeActionStartedEvent(CafeActionStartedEvent eve) {

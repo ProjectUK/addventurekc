@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections;
+using System.Collections.Generic;
 
 public class ShopItemButton : MonoBehaviour {
 
@@ -30,6 +31,10 @@ public class ShopItemButton : MonoBehaviour {
 	public Text PriceText;
 	public Image ItemImage;
 
+	public List<PriceModel> Prices = new List<PriceModel>();
+
+	PriceModel _CurrentPriceModel;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -42,6 +47,13 @@ public class ShopItemButton : MonoBehaviour {
 		_Button.onClick.AddListener (() => {
 			ToggleEnlargeRectTransform();
 		});
+
+		EventManager.Instance.AddListener<BuyItemEvent> (OnBuyItemEvent);
+
+		// set buy button action
+		BuyButton.onClick.AddListener (() => {
+			EventManager.Instance.TriggerEvent (new BuyItemEvent (_CurrentPriceModel.ID));
+		});
 	}
 	
 	// Update is called once per frame
@@ -52,7 +64,56 @@ public class ShopItemButton : MonoBehaviour {
 	public void Init() {
 		_RectTransform = GetComponent <RectTransform> ();
 		_InitSize = _RectTransform.sizeDelta;
+
+		SetCurrentPrice ();
 	}
+
+	void SetCurrentPrice() {
+		// Set the price if it has multiple price count
+		if (Prices.Count > 1) {
+
+			//Get from savemanager the highest purchased item level
+			Prices.Sort ((PriceModel x, PriceModel y) => {
+				return x.Level.CompareTo (y.Level);
+			});
+
+			bool foundHighestPurchasedItem = false;
+			for (int itPrices = Prices.Count - 1; itPrices > 0; itPrices--) {
+				PriceModel priceModel = Prices [itPrices];
+				if (GameSaveManager.Instance.CheckPurchase (priceModel.ID)) {
+
+					if (itPrices < Prices.Count - 1) {
+						PriceModel nextPriceModel = Prices [itPrices + 1];
+						_CurrentPriceModel = nextPriceModel;
+					} else {
+						// udah full, diapain?
+						_CurrentPriceModel = new PriceModel();
+						_CurrentPriceModel.Price = -1;
+						_CurrentPriceModel.Level = -1;
+						_CurrentPriceModel.ID = "FULL";
+
+						BuyButton.interactable = false;
+					}
+
+					foundHighestPurchasedItem = true;
+					break;
+				}
+			}
+
+			// default 0, then choose 1 (the next higher rank)
+			if (!foundHighestPurchasedItem) {
+				_CurrentPriceModel = Prices [1];
+			} else {
+			}
+
+			// set price
+			PriceText.text = _CurrentPriceModel.Price.ToString ();
+
+		} else {
+			// cek udah beli aja
+		}
+	}
+
 
 	void ToggleEnlargeRectTransform(){
 //		_RectTransform.sizeDelta
@@ -117,6 +178,15 @@ public class ShopItemButton : MonoBehaviour {
 		if (loadedTexture2D != null) {
 			Sprite loadedSprite = Sprite.Create (loadedTexture2D, new Rect (0,0, loadedTexture2D.width, loadedTexture2D.height), Vector2.zero);
 			ItemImage.sprite = loadedSprite;
+		}
+	}
+
+	void OnBuyItemEvent(BuyItemEvent eve) {
+		if (_CurrentPriceModel.ID == eve.ItemId) {
+			//TODO: CEK DUITNYA ADA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			GameSaveManager.Instance.SetPurchase (eve.ItemId);
+			// ubah jadi next price
+			SetCurrentPrice();
 		}
 	}
 

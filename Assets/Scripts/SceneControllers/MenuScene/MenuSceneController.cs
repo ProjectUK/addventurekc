@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using GooglePlayGames;
+using UnityEngine.SocialPlatforms;
 
 
 public class MenuSceneController : MonoBehaviour {
@@ -92,7 +94,8 @@ public class MenuSceneController : MonoBehaviour {
 		MainMenu_LeaderboardBtn.onClick.AddListener (delegate {
 			AudioManager.Instance.Play("button_click", false, 1f, 0f);
 			Leaderboard_Show();
-			_CurrentScreen = GameScreen.LEADERBOARD;
+//			_CurrentScreen = GameScreen.LEADERBOARD;
+
 		});
 
 		// show pause
@@ -130,7 +133,7 @@ public class MenuSceneController : MonoBehaviour {
 			AudioManager.Instance.Play("button_click", false, 1f, 0f);
 			GameOverMenu_Hide();
 			Leaderboard_Show();
-			_CurrentScreen = GameScreen.LEADERBOARD;
+//			_CurrentScreen = GameScreen.LEADERBOARD;
 		});
 
 		PauseMenu_MainMenuBtn.onClick.AddListener (delegate {
@@ -159,6 +162,13 @@ public class MenuSceneController : MonoBehaviour {
 		// set initial position of leaderboard
 		Leaderboard.position = LeaderboardEndPos.position;
 
+	}
+
+	public void TestLogin() {
+		Social.localUser.Authenticate((bool success) => {
+			// handle success or failure
+			PlayGamesPlatform.Activate();
+		});
 	}
 
 	void Update () {
@@ -204,9 +214,10 @@ public class MenuSceneController : MonoBehaviour {
 
 	public void Leaderboard_Show() {
 		
-		Leaderboard.DOMove(LeaderboardStartPos.position, 1, false).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() =>{
-			_CurrentScreen = GameScreen.LEADERBOARD;
-		});
+//		Leaderboard.DOMove(LeaderboardStartPos.position, 1, false).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() =>{
+//			_CurrentScreen = GameScreen.LEADERBOARD;
+//		});
+		Social.Active.ShowLeaderboardUI();
 	}
 
 

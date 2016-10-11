@@ -16,6 +16,8 @@ public class SplashController : MonoBehaviour {
 
 	public bool _ActivatingNextScene = false;
 
+	public bool Running;
+
 
 	// Use this for initialization
 	void Start () {
@@ -26,17 +28,20 @@ public class SplashController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Time.realtimeSinceStartup > _RealEndTime) {
-			LoadNextScene (NextSceneName);
-		} else {
 
-			if (Time.realtimeSinceStartup > _RealUninterruptedTime) {
-				if (Input.GetMouseButtonDown(0)) {
-					LoadNextScene (NextSceneName);
+		if (Running) {
+			if (Time.realtimeSinceStartup > _RealEndTime) {
+				LoadNextScene (NextSceneName);
+			} else {
+				
+				if (Time.realtimeSinceStartup > _RealUninterruptedTime) {
+					if (Input.GetMouseButtonDown(0)) {
+						LoadNextScene (NextSceneName);
+					}
 				}
 			}
-
 		}
+
 	}
 
 	void LoadNextScene(string nextSceneName) {

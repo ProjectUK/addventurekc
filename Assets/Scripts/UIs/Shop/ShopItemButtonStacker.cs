@@ -33,16 +33,23 @@ public class ShopItemButtonStacker : MonoBehaviour {
 			rt.sizeDelta = new Vector2 (0, rt.sizeDelta.y);
 
 			ShopItemButton sib = ShopButton.GetComponent<ShopItemButton> ();
-			sib.Init ();
 
 			//TODO: Image
 //			sib.ItemImage.....
+			sib.SetImage (shopItemModel.Image);
 			sib.DetailsText.text = shopItemModel.Info;
 			sib.NameText.text = shopItemModel.Name;
 
-			//TODO: Get from save sudah ke berapa
-			sib.PriceText.text = shopItemModel.Prices[0].Price.ToString();
-			sib.SetImage (shopItemModel.Image);
+			sib.Prices = shopItemModel.Prices;
+
+			sib.Init ();
+
+
+
+				
+
+
+
 		}
 
 		_ShopItems = GetComponentsInChildren<ShopItemButton> ();
