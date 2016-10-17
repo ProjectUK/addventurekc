@@ -3,21 +3,18 @@ using System.Collections;
 
 public class GameSaveManager : MonoBehaviour {
 
-	const string GAME_SAVE_MANAGER_DB_VERSION = "1";
+	const int GAME_SAVE_MANAGER_DB_VERSION = 1;
 
-	const string DB_VERSION = "CROWS_COFFEE";
-	const string FIRST_PLAY = "first_play";
-	const string COIN = "coin";
-	const string LANGUAGE = "language"; 
-	const string BACKGROUND = "background";
-	const string SFX = "sfx";
-	const string BGM = "bgm";
-
-	const string CONTROL = "control";	//0 = tilt, 1 = swipe
+	const string INT_DB_INITIALIZED = "init_db";	// 0 = false, 1 = true
+	const string INT_DB_VERSION = "CROWS_COFFEE_DB_VERSION";
+	const string INT_FIRST_PLAY = "first_play";
+	const string INT_COIN = "coin";
+	const string INT_LANGUAGE = "language"; 
+	const string INT_SFX = "sfx";
+	const string INT_BGM = "bgm";
+	const string STR_BACKGROUND = "background";
 
 	const string SHOP_ITEM_KEY_PREFIX 	= "shop~";
-
-	
 
 	public enum GameLanguages
 	{
@@ -37,27 +34,91 @@ public class GameSaveManager : MonoBehaviour {
 		}
 	}
 
+	public int MockupCoin;
+
 	public bool DoReset;
+	public bool DoMockup;
 
 	// Use this for initialization
 	void Start () {
-	
+
+		CheckInitDB ();
+
+		MockupCoin = GetCoins ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (DoReset) {
-			PlayerPrefs.DeleteAll ();
 			DoReset = false;
+			PlayerPrefs.DeleteAll ();
+		}
+
+		if (DoMockup) {
+			DoMockup = false;
+			SetCoins (MockupCoin);
 		}
 	}
 
+	#region InitDb
+
+	void CheckInitDB () {
+
+		if (PlayerPrefs.HasKey (INT_DB_INITIALIZED)) {
+
+			if (PlayerPrefs.GetInt (INT_DB_INITIALIZED, 0) == 1) {
+				// initialized
+
+				// check version same with hardcoded version (such as updated version)
+				int dbVersion = PlayerPrefs.GetInt (INT_DB_VERSION, 0);
+				
+				if (dbVersion != GAME_SAVE_MANAGER_DB_VERSION) {
+					// do something with differences
+					UpdateDB (dbVersion);
+				}
+			} else {
+				// not initialized
+				InitDB();
+			}
+
+		} else {
+			InitDB ();
+		}
+
+	}
+
+	void InitDB () {
+
+		// default value of coin
+		SetCoins(125);
+
+
+		PlayerPrefs.SetInt (INT_DB_INITIALIZED, 1);
+		PlayerPrefs.SetInt (INT_DB_VERSION, GAME_SAVE_MANAGER_DB_VERSION);
+	}
+
+	void UpdateDB(int prevVersion) {
+
+		switch(prevVersion) {
+		case 0:
+			break;
+		case 1:
+			break;
+		default:
+			break;
+		}
+
+		PlayerPrefs.SetInt (INT_DB_VERSION, GAME_SAVE_MANAGER_DB_VERSION);
+
+	}
+
+	#endregion
 
 	#region Firstplay
 
 	public bool IsFirstPlay() {
-		if (PlayerPrefs.HasKey (FIRST_PLAY)) {
-			int intFirstPlay = PlayerPrefs.GetInt (FIRST_PLAY);
+		if (PlayerPrefs.HasKey (INT_FIRST_PLAY)) {
+			int intFirstPlay = PlayerPrefs.GetInt (INT_FIRST_PLAY);
 			if (intFirstPlay == 0) {
 				return false;
 			} else {
@@ -77,7 +138,7 @@ public class GameSaveManager : MonoBehaviour {
 
 	public void SetFirstPlay (bool firstPlay){
 		int intFirstPlay = firstPlay ? 1 : 0;
-		PlayerPrefs.SetInt (FIRST_PLAY, intFirstPlay);
+		PlayerPrefs.SetInt (INT_FIRST_PLAY, intFirstPlay);
 	}
 
 	#endregion
@@ -85,12 +146,12 @@ public class GameSaveManager : MonoBehaviour {
 	#region Audio
 
 	public void SetSFX (bool isTurnedOn) {
-		PlayerPrefs.SetInt (SFX, (isTurnedOn?1:0));
+		PlayerPrefs.SetInt (INT_SFX, (isTurnedOn?1:0));
 	}
 
 	public bool IsSFXPlay() {
-		if (PlayerPrefs.HasKey (SFX)) {
-			int SFXValue = PlayerPrefs.GetInt (SFX);
+		if (PlayerPrefs.HasKey (INT_SFX)) {
+			int SFXValue = PlayerPrefs.GetInt (INT_SFX);
 			if (SFXValue == 0) {
 				// it's muted
 				return false;
@@ -105,12 +166,12 @@ public class GameSaveManager : MonoBehaviour {
 	}
 
 	public void SetBGM (bool isTurnedOn) {
-		PlayerPrefs.SetInt (BGM, (isTurnedOn?1:0));
+		PlayerPrefs.SetInt (INT_BGM, (isTurnedOn?1:0));
 	}
 
 	public bool IsBGMPlay() {
-		if (PlayerPrefs.HasKey (BGM)) {
-			int BGMValue = PlayerPrefs.GetInt (BGM);
+		if (PlayerPrefs.HasKey (INT_BGM)) {
+			int BGMValue = PlayerPrefs.GetInt (INT_BGM);
 			if (BGMValue == 0) {
 				// it's muted
 				return false;
@@ -132,20 +193,20 @@ public class GameSaveManager : MonoBehaviour {
 		switch (language) {
 			case GameLanguages.INGGRIS:
 			{
-				PlayerPrefs.SetInt (LANGUAGE, (int)GameLanguages.INGGRIS);
+				PlayerPrefs.SetInt (INT_LANGUAGE, (int)GameLanguages.INGGRIS);
 			}
 			break;
 			case GameLanguages.INDONESIA:
 			{
-				PlayerPrefs.SetInt (LANGUAGE, (int)GameLanguages.INDONESIA);
+				PlayerPrefs.SetInt (INT_LANGUAGE, (int)GameLanguages.INDONESIA);
 			}
 			break;
 		}
 	}
 
 	public GameLanguages GetLanguage() {
-		if (PlayerPrefs.HasKey (LANGUAGE)) {
-			int savedLanguage = PlayerPrefs.GetInt (LANGUAGE);
+		if (PlayerPrefs.HasKey (INT_LANGUAGE)) {
+			int savedLanguage = PlayerPrefs.GetInt (INT_LANGUAGE);
 
 			return (GameLanguages)savedLanguage;
 		} else {
@@ -199,15 +260,23 @@ public class GameSaveManager : MonoBehaviour {
 
 	public int GetCoins() {
 		int currentCoin = 0;
-		if (PlayerPrefs.HasKey(COIN)) {
-			currentCoin = PlayerPrefs.GetInt (COIN);
+		if (PlayerPrefs.HasKey(INT_COIN)) {
+			currentCoin = PlayerPrefs.GetInt (INT_COIN);
 		}
 
 		return currentCoin;
 	}
 
 	public void SetCoins(int coins) {
-		PlayerPrefs.SetInt (COIN, coins);
+		PlayerPrefs.SetInt (INT_COIN, coins);
+	}
+
+	public void AddCoins(int coins) {
+
+		int prevCoin = GetCoins ();
+		int totalCoin = prevCoin + coins;
+
+		PlayerPrefs.SetInt (INT_COIN, totalCoin);
 	}
 
 
@@ -232,12 +301,12 @@ public class GameSaveManager : MonoBehaviour {
 	#region Background
 
 	public void SetBackground (string bgName) {
-		PlayerPrefs.SetString (BACKGROUND, bgName);
+		PlayerPrefs.SetString (STR_BACKGROUND, bgName);
 	}
 
 	public string GetBackground () {
-		if (PlayerPrefs.HasKey (BACKGROUND)) {
-			return PlayerPrefs.GetString (BACKGROUND);
+		if (PlayerPrefs.HasKey (STR_BACKGROUND)) {
+			return PlayerPrefs.GetString (STR_BACKGROUND);
 		} else {
 			return "default";
 		}
@@ -255,29 +324,6 @@ public class GameSaveManager : MonoBehaviour {
 
 	#endregion
 
-	#region Control Options
-
-	public void SetControlSwipe (bool isSwipe) {
-		PlayerPrefs.SetInt (CONTROL, (isSwipe?1:0));
-	}
-
-	public bool IsControlSwipe() {
-		if (PlayerPrefs.HasKey (CONTROL)) {
-			int ControlValue = PlayerPrefs.GetInt (CONTROL);
-			if (ControlValue == 0) {
-				// it's tilt
-				return false;
-			} else {
-				// it's swipe
-				return true;
-			}
-		} else {
-			// it's tilt by default
-			return false;
-		}
-	}
-
-	#endregion
 
 	#region Utilities
 	// Warning! Be careful!
@@ -286,11 +332,11 @@ public class GameSaveManager : MonoBehaviour {
 	}
 
 	public void SetDBVersion(int version) {
-		PlayerPrefs.SetInt (DB_VERSION, version);
+		PlayerPrefs.SetInt (INT_DB_VERSION, version);
 	}
 
 	public int GetDBVersion() {
-		int dbVersion = PlayerPrefs.GetInt (DB_VERSION, 0);
+		int dbVersion = PlayerPrefs.GetInt (INT_DB_VERSION, 0);
 		return dbVersion;
 	}
 

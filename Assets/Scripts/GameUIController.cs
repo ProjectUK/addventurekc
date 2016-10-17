@@ -38,9 +38,9 @@ public class GameUIController : MonoBehaviour {
 		EnemySp.Spawn ();
 	}
 
-	public void TestBack() {
-		MenuSceneCtrl.MainMenu_Show ();
-	}
+//	public void TestBack() {
+//		MenuSceneCtrl.MainMenu_Show ();
+//	}
 
 	#region Event Listener
 

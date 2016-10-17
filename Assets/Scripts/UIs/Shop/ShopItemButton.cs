@@ -55,20 +55,15 @@ public class ShopItemButton : MonoBehaviour {
 			EventManager.Instance.TriggerEvent (new BuyItemEvent (_CurrentPriceModel.ID));
 		});
 	}
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
 
 	public void Init() {
 		_RectTransform = GetComponent <RectTransform> ();
 		_InitSize = _RectTransform.sizeDelta;
 
-		SetCurrentPrice ();
+		UpdateCurrentPrice ();
 	}
 
-	void SetCurrentPrice() {
+	void UpdateCurrentPrice() {
 		// Set the price if it has multiple price count
 		if (Prices.Count > 1) {
 
@@ -116,8 +111,6 @@ public class ShopItemButton : MonoBehaviour {
 
 
 	void ToggleEnlargeRectTransform(){
-//		_RectTransform.sizeDelta
-
 		Vector2 prevSize = _RectTransform.sizeDelta;
 
 		if (!_Enlarged) {
@@ -183,10 +176,17 @@ public class ShopItemButton : MonoBehaviour {
 
 	void OnBuyItemEvent(BuyItemEvent eve) {
 		if (_CurrentPriceModel.ID == eve.ItemId) {
+
 			//TODO: CEK DUITNYA ADA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			GameSaveManager.Instance.SetPurchase (eve.ItemId);
-			// ubah jadi next price
-			SetCurrentPrice();
+			if (GameSaveManager.Instance.CheckCoinSufficient(_CurrentPriceModel.Price) ) {
+				// kurangi duitnya
+				GameSaveManager.Instance.DecreaseCoins(_CurrentPriceModel.Price);
+
+				GameSaveManager.Instance.SetPurchase (eve.ItemId);
+
+				// ubah jadi next price
+				UpdateCurrentPrice();
+			}
 		}
 	}
 

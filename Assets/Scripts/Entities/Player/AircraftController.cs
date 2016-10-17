@@ -37,12 +37,7 @@ public class AircraftController : MonoBehaviour {
 	[Header("Super power")]
 	public GameObject ShieldObj;
 
-//	[Header("Movement objects")]
-//	public GameObject IdleObj;
-//	public GameObject TiltLeftObj;
-//	public GameObject TiltRightObj;
 	public Animator AirplaneAnimator;
-
 
 	[Header("X positions")]
 	public Transform MaxX;
@@ -300,7 +295,6 @@ public class AircraftController : MonoBehaviour {
 		for (int i = 0; i < Guns.Length; i++) {
 
 			GunModel currentGun = Guns [i];
-
 			Coroutine shootRoutine = StartCoroutine (UpdateShoot (currentGun));
 			_ShootingRoutine.Add (shootRoutine);
 		}
@@ -336,11 +330,9 @@ public class AircraftController : MonoBehaviour {
 	#region Actions
 
 	public void Die() {
-
 		if (_CurrentInvulnerableTime <= 0) {
 			Explode ();
 		}
-
 	}
 
 	public void Explode (){
@@ -393,13 +385,6 @@ public class AircraftController : MonoBehaviour {
 
 			currentGunModel.BoostDelay = eve.BoostDelay;
 			currentGunModel.BoostTime = eve.BoostTime;
-
-//			// prevent shooting delay to 0
-//			if (currentGunModel.ShootingDelay-eve.BoostTime > 0) {
-//				if (currentGunModel.ShootingDelay > eve.BoostTime) {
-//					currentGunModel.ShootingDelay -= eve.BoostTime;
-//				}
-//			}
 		}
 	}
 
