@@ -96,7 +96,7 @@ public class EntitySpawner : MonoBehaviour {
 
 	#region Unity Methods
 
-	void Update() {
+	public virtual void Update() {
 		if (Application.isEditor) {
 			DetectPercentageChange ();
 		}
@@ -215,7 +215,7 @@ public class EntitySpawner : MonoBehaviour {
 
 				// set target time
 				_TargetWaitTime = Random.Range (MinRandomWait, MaxRandomWait);
-				// reset wait tiem
+				// reset wait time
 				_CurrentWaitTime = 0;
 
 				this._CurrentState = SPAWNING_STATE.BEFORE_SPAWN_WAIT;

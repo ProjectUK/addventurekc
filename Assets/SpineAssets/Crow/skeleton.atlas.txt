@@ -1,0 +1,83 @@
+
+skeleton.png
+size: 384,350
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+plane1_0000_Group-8
+  rotate: true
+  xy: 270, 71
+  size: 64, 111
+  orig: 64, 111
+  offset: 0, 0
+  index: -1
+plane1_0001_Group-15
+  rotate: false
+  xy: 270, 5
+  size: 79, 64
+  orig: 79, 64
+  offset: 0, 0
+  index: -1
+plane1_0002_tail
+  rotate: true
+  xy: 2, 2
+  size: 10, 48
+  orig: 10, 48
+  offset: 0, 0
+  index: -1
+plane1_0003_LOGO
+  rotate: true
+  xy: 330, 300
+  size: 48, 49
+  orig: 48, 49
+  offset: 0, 0
+  index: -1
+plane1_0004_Group-19
+  rotate: true
+  xy: 270, 137
+  size: 88, 112
+  orig: 88, 112
+  offset: 0, 0
+  index: -1
+plane1_0005_body
+  rotate: false
+  xy: 2, 61
+  size: 144, 287
+  orig: 144, 287
+  offset: 0, 0
+  index: -1
+plane1_0006_right-wing
+  rotate: false
+  xy: 148, 227
+  size: 180, 121
+  orig: 180, 121
+  offset: 0, 0
+  index: -1
+plane1_0007_left-wing
+  rotate: true
+  xy: 148, 49
+  size: 176, 120
+  orig: 176, 120
+  offset: 0, 0
+  index: -1
+plane1_0008_right-tail
+  rotate: false
+  xy: 2, 14
+  size: 71, 45
+  orig: 71, 45
+  offset: 0, 0
+  index: -1
+plane1_0009_left-tail
+  rotate: false
+  xy: 75, 14
+  size: 71, 45
+  orig: 71, 45
+  offset: 0, 0
+  index: -1
+tail _opy
+  rotate: false
+  xy: 330, 262
+  size: 39, 36
+  orig: 39, 36
+  offset: 0, 0
+  index: -1

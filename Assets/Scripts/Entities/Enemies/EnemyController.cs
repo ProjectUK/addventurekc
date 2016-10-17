@@ -46,7 +46,8 @@ public abstract class EnemyController : Entity{
 	}
 
 	public void ResetHealth() {
-		this.CurrentHealth = this.MaxHealth;
+		int totalMaxHealth = (int) Mathf.Ceil(this.MaxHealth * Blackboard.Instance.EnemyHealthMultiplier);
+		this.CurrentHealth = totalMaxHealth;
 	}
 
 	void HitPlayer(Collider2D coll) {
@@ -62,7 +63,7 @@ public abstract class EnemyController : Entity{
 
 	protected void Explode() {
 		
-		EventManager.Instance.TriggerEvent (new EnemyDeadEvent (EnemyType));
+		EventManager.Instance.TriggerEvent (new EnemyDeadEvent (this));
 
 		if (EnemyType == AircraftType.BOSS) {
 			EventManager.Instance.TriggerEvent (new BossDeadEvent ());

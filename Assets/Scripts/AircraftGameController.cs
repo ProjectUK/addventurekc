@@ -36,19 +36,13 @@ public class AircraftGameController : MonoBehaviour {
 	[Header("Game Values")]
 	public int LifeRemaining;
 
-	[Header("Parameters")]
-	public float DistancePerSec = 5;
-
 	[Header("Scores")]
 	public float TotalScore = 0;
-	public float DistanceScore;
 	public float EnemiesCount;
 	public float BossCount;
-	public float CoffeeCount;
 
 	public float ScorePerBoss = 1;
 	public float ScorePerEnemy = 1;
-	public float ScorePerCoffee = 1;
 
 	public ScrollingBackgroundController BackgroundController;
 
@@ -66,8 +60,6 @@ public class AircraftGameController : MonoBehaviour {
 		EventManager.Instance.AddListener<EnemyDeadEvent> (OnEnemyDeadEvent);
 
 		LifeRemaining = MaxLife;
-
-		StartCoroutine (IEUpdateDistanceScore ());
 	}
 	
 	// Update is called once per frame
@@ -75,7 +67,7 @@ public class AircraftGameController : MonoBehaviour {
 
 //		TotalScore = DistanceScore + EnemiesScore + BossScore + CoffeeScore;
 //		TotalScore = EnemiesCount + BossCount + CoffeeCount;
-		TotalScore = (EnemiesCount * ScorePerEnemy) + (BossCount * ScorePerBoss) + (CoffeeCount * ScorePerCoffee);
+		TotalScore = (EnemiesCount * ScorePerEnemy) + (BossCount * ScorePerBoss);
 
 		UpdatePlaying ();
 		UpdateWakeMeter ();
@@ -91,9 +83,9 @@ public class AircraftGameController : MonoBehaviour {
 			_TmpPlaying = IsPlaying;
 
 			if (IsPlaying) {
-				AircraftObject.Playing = true;
+				AircraftObject.IsPlaying = true;
 			} else {
-				AircraftObject.Playing = false;
+				AircraftObject.IsPlaying = false;
 			}
 
 			EnemySpawnerObject.IsPlaying = IsPlaying;
@@ -110,22 +102,9 @@ public class AircraftGameController : MonoBehaviour {
 		ScoreText.text = TotalScore.ToString();
 	}
 
-
-	IEnumerator IEUpdateDistanceScore() {
-		while(true) {
-			yield return null;
-
-			// distance
-			if (Time.timeScale > 0 && IsPlaying) {
-				yield return new WaitForSeconds (1);
-				DistanceScore += DistancePerSec;
-			}
-		}
-	}
-
 	void UpdateWakeMeter() {
 		if (CurrentWakeValue >= 0 && IsPlaying) {
-			CurrentWakeValue -= WakeDecreasePerSecond*Time.deltaTime;
+			CurrentWakeValue -= WakeDecreasePerSecond * Blackboard.Instance.WakeDecreaseMultiplier * Time.deltaTime;
 			
 			if (CurrentWakeValue < 0) {
 				OnWakeMeterDepleted ();
@@ -147,8 +126,6 @@ public class AircraftGameController : MonoBehaviour {
 		TotalScore = 0;
 		EnemiesCount = 0;
 		BossCount = 0;
-		DistanceScore = 0;
-		CoffeeCount = 0;
 
 		AircraftObject.gameObject.SetActive (true);
 		AircraftObject.Restart ();
@@ -173,7 +150,7 @@ public class AircraftGameController : MonoBehaviour {
 	public void StartGame() {
 
 		AircraftObject.InitialGameStarting = false;
-		AircraftObject.Playing = true;
+		AircraftObject.IsPlaying = true;
 
 		// initialize aircraft input
 		AircraftObject.Init ();
@@ -196,7 +173,7 @@ public class AircraftGameController : MonoBehaviour {
 
 	//TODO: For what?? Gameover?
 	public void StopGame() {
-		AircraftObject.Playing = false;
+		AircraftObject.IsPlaying = false;
 
 		IsPlaying = false;
 		AircraftObject.StopShooting ();
@@ -209,13 +186,13 @@ public class AircraftGameController : MonoBehaviour {
 
 	public void PauseGame() {
 		IsPlaying = false;
-		AircraftObject.Playing = false;
+		AircraftObject.IsPlaying = false;
 		Time.timeScale = 0;
 	}
 
 	public void ResumeGame() {
 		IsPlaying = true;
-		AircraftObject.Playing = true;
+		AircraftObject.IsPlaying = true;
 		Time.timeScale = 1;
 	}
 
@@ -296,15 +273,13 @@ public class AircraftGameController : MonoBehaviour {
 	void OnReceiveWakeEvent(ReceiveWakeEvent eve) {
 		CurrentWakeValue += eve.WakeValue;
 		CurrentWakeValue = Mathf.Clamp (CurrentWakeValue, 0, MaxWakeValue);
-
-		CoffeeCount++;
 	}
 
 	void OnEnemyDeadEvent(EnemyDeadEvent eve) {
 
 		EnemiesCount++;
 
-		if (eve.AircraftType == EnemyController.AircraftType.BOSS) {
+		if (eve.EnemyController.EnemyType == EnemyController.AircraftType.BOSS) {
 			BossCount++;
 		}
 	}

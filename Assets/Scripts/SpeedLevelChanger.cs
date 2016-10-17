@@ -18,6 +18,9 @@ public class SpeedLevelChanger : MonoBehaviour {
 		public float EntitiesSpeedMultiplier;
 		public float BulletSpeedMultiplier;
 		public float BulletSpawnSpeedMultiplier;
+		public float EnemyHealthMultiplier;
+		public float WakeDecreaseMultiplier;
+		public float MaxEnemySpawnRandomWait;
 	}
 
 	public LevelModel[] Levels;
@@ -39,9 +42,6 @@ public class SpeedLevelChanger : MonoBehaviour {
 			AircraftGame = GameObject.FindObjectOfType<AircraftGameController> ();
 		}
 
-		EventManager.Instance.AddListener<StartGameEvent> (OnStartGame);
-
-
 		StartCoroutine (CheckLevelRoutine ());
 	}
 	
@@ -60,7 +60,7 @@ public class SpeedLevelChanger : MonoBehaviour {
 
 	LevelModel getLevelModel(float currentScore) {
 		for (int i = 0; i < Levels.Length; i++) {
-			if (Levels[i].MinScore < currentScore && currentScore <= Levels[i].MaxScore ) {
+			if (Levels[i].MinScore <= currentScore && currentScore <= Levels[i].MaxScore ) {
 				return Levels [i];
 			}
 		}
@@ -71,14 +71,12 @@ public class SpeedLevelChanger : MonoBehaviour {
 		LevelModel levelModel = getLevelModel (AircraftGame.TotalScore);
 
 		if (levelModel != null) {
-			_Blackboard.BulletSpawnSpeedMultiplier = levelModel.BulletSpawnSpeedMultiplier;
-			_Blackboard.BulletSpeedMultiplier = levelModel.BulletSpeedMultiplier;
-			_Blackboard.EntitiesSpeedMultiplier = levelModel.EntitiesSpeedMultiplier;
+			_Blackboard.BulletSpawnSpeedMultiplier 	= levelModel.BulletSpawnSpeedMultiplier;
+			_Blackboard.BulletSpeedMultiplier 		= levelModel.BulletSpeedMultiplier;
+			_Blackboard.EntitiesSpeedMultiplier 	= levelModel.EntitiesSpeedMultiplier;
+			_Blackboard.EnemyHealthMultiplier 		= levelModel.EnemyHealthMultiplier;
+			_Blackboard.WakeDecreaseMultiplier 		= levelModel.WakeDecreaseMultiplier;
+			_Blackboard.MaxEnemySpawnRandomWait 	= levelModel.MaxEnemySpawnRandomWait;
 		}
-	}
-
-	void OnStartGame(StartGameEvent eve) {
-		// force to check level on game start
-		checkLevel();
 	}
 }

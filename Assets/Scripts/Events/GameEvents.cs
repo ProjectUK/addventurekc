@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class EnemyDeadEvent : GameEvent {
-	public EnemyController.AircraftType AircraftType;
-	public EnemyDeadEvent(EnemyController.AircraftType aircraftType) {
-		this.AircraftType = aircraftType;
+	public EnemyController EnemyController;
+	public EnemyDeadEvent(EnemyController enemyController) {
+		this.EnemyController = enemyController;
 	}
 }
 

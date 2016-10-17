@@ -11,7 +11,6 @@ public class PoolManager : MonoBehaviour {
 				s_Instance = GameObject.FindObjectOfType(typeof(PoolManager)) as PoolManager;
 
 			}
-
 			return s_Instance;
 		}
 	}
@@ -43,7 +42,7 @@ public class PoolManager : MonoBehaviour {
 				newPool.IsExpanding = isExpanding;
 				newPool.Prefab = Prefab;
 				
-				// activate gameobect to start pooling
+				// activate gameobject to start pooling
 				go.SetActive (true);
 				
 				Pools.Add (PoolName, newPool);

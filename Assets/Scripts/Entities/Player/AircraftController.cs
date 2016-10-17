@@ -17,10 +17,11 @@ public class AircraftController : MonoBehaviour {
 		TILT_RIGHT
 	}
 
-
-	public bool Playing;
+	public bool IsPlaying;
+//	public bool Playing;
 	public bool Shooting;
 	public bool InitialGameStarting;
+	public bool UseDeltaMovement = false;
 
 	private bool _Shielded;
 	public bool Shielded{
@@ -36,11 +37,11 @@ public class AircraftController : MonoBehaviour {
 	[Header("Super power")]
 	public GameObject ShieldObj;
 
-
-	[Header("Movement objects")]
-	public GameObject IdleObj;
-	public GameObject TiltLeftObj;
-	public GameObject TiltRightObj;
+//	[Header("Movement objects")]
+//	public GameObject IdleObj;
+//	public GameObject TiltLeftObj;
+//	public GameObject TiltRightObj;
+	public Animator AirplaneAnimator;
 
 
 	[Header("X positions")]
@@ -78,12 +79,8 @@ public class AircraftController : MonoBehaviour {
 
 	public float InitTime = 1;
 	public float InitInvulnerableTime = 1;
-	float _CurrentInvulnerableTime;
-	float _CurrentInitTime;
 
-	public float XMovementSpeed;
-
-	private Vector3 _DeltaMovement;
+	[Header("Delta Movement Properties")]
 	public float MinXMovementTolerance;
 	public float CountdownStopTolerance = 0.1f;
 
@@ -94,8 +91,11 @@ public class AircraftController : MonoBehaviour {
 	List<Coroutine> _ShootingRoutine = new List<Coroutine>();
 
 	List<float> _TmpShootingDelays = new List<float>();
+	private Vector3 _DeltaMovement;
+	private float _XAcceleration;
 
-	public bool IsPlaying;
+	float _CurrentInvulnerableTime;
+	float _CurrentInitTime;
 
 	#region Unity Methods
 
@@ -146,7 +146,7 @@ public class AircraftController : MonoBehaviour {
 		while (true) {
 			Vector3 prevPos = this.transform.position;
 
-			if (Playing) {
+			if (IsPlaying) {
 				UpdateMovement ();
 				UpdateShield ();
 			}
@@ -175,17 +175,13 @@ public class AircraftController : MonoBehaviour {
 	}
 
 	void UpdateMovement() {
-
-
-
-
 		if (_CurrentInitTime <= 0) {
 
-			if (Playing && !InitialGameStarting) {
+			if (IsPlaying && !InitialGameStarting) {
 
 				if (Control == ControlMethod.TILT) {
-					float xAcceleration = (Input.acceleration.x - InputOffset.x) * TiltSpeed.x * Time.deltaTime;
-					float xPos = this.transform.position.x + xAcceleration;
+					_XAcceleration = (Input.acceleration.x - InputOffset.x) * TiltSpeed.x * Time.deltaTime;
+					float xPos = this.transform.position.x + _XAcceleration;
 					xPos = Mathf.Clamp (xPos, MinX.position.x, MaxX.position.x);
 											
 					float yAcceleration = (Input.acceleration.y - InputOffset.y) * TiltSpeed.y * Time.deltaTime;
@@ -202,8 +198,8 @@ public class AircraftController : MonoBehaviour {
 				} else if (Control == ControlMethod.SWIPE) {
 					
 
-					float xAcceleration = (Joystick.DeltaTouch.x) * TouchSpeed.x * Time.deltaTime;
-					float xPos = this.transform.position.x + xAcceleration;
+					_XAcceleration = (Joystick.DeltaTouch.x) * TouchSpeed.x * Time.deltaTime;
+					float xPos = this.transform.position.x + _XAcceleration;
 					xPos = Mathf.Clamp (xPos, MinX.position.x, MaxX.position.x);
 
 					float yAcceleration = (Joystick.DeltaTouch.y) * TouchSpeed.y * Time.deltaTime;
@@ -216,7 +212,6 @@ public class AircraftController : MonoBehaviour {
 						this.transform.position.z);
 
 					transform.position = position;
-
 						
 				}
 
@@ -226,127 +221,55 @@ public class AircraftController : MonoBehaviour {
 		}
 
 	}
-
+	 
+	// Change to based on input state (not delta movement state)
 	IEnumerator IEUpdateAircraftState() {
 
 		while (true) {
 			yield return null;
-
-			// Calculate movement
-			Vector3 prevPos = this.transform.position;
-			yield return new WaitForSeconds(0.1f);
-			_DeltaMovement = this.transform.position - prevPos;
-
-			SetSpriteMovement (_CurrentMovementState);
-
-			if (!doStop) {
-				// wait before stop
-				if (Mathf.Abs(_DeltaMovement.x) < MinXMovementTolerance) {
-					countdownStop += Time.deltaTime;
-				} else {
-					countdownStop = 0;
-				}
-				
-				if (countdownStop > CountdownStopTolerance) {
-					doStop = true;
-					countdownStop = 0;
-				}
-			}
-			if (_CurrentMovementState == AircraftMovementState.TILT_LEFT) {	
-				
-				//sudden movement to opposite direction
-				if (_DeltaMovement.x > 0) {
-					if (Mathf.Abs (_DeltaMovement.x) > MinXMovementTolerance) {
-						_CurrentMovementState = AircraftMovementState.TILT_RIGHT;
-						countdownStop = 0;
-					}
-				}
-				if (doStop) {
-					// set to idle
-					_CurrentMovementState = AircraftMovementState.IDLE;
-					// play back animation
-					TiltLeftObj.GetComponent<TiltingAircraftController> ().SpriteAnimator.Play ("Aircraft Tilt Left Inverse");
-					yield return new WaitForSeconds (0.2f);
-					doStop = false;
-				}
-
-			} else if (_CurrentMovementState == AircraftMovementState.TILT_RIGHT) {
-
-				//sudden movement to opposite direction
-				if (_DeltaMovement.x < 0) {
-					if (Mathf.Abs (_DeltaMovement.x) > MinXMovementTolerance) {
-						_CurrentMovementState = AircraftMovementState.TILT_LEFT;
-						countdownStop = 0;
-					}
-				} 
-				if (doStop) {
-					// set to idle
-					_CurrentMovementState = AircraftMovementState.IDLE;
-					// play back animation
-					TiltRightObj.GetComponent<TiltingAircraftController> ().SpriteAnimator.Play ("Aircraft Tilt Right Inverse");
-					yield return new WaitForSeconds (0.2f);
-					doStop = false;
-				}
-
-			} else if (_CurrentMovementState == AircraftMovementState.IDLE) {
-				if (Mathf.Abs (_DeltaMovement.x) > MinXMovementTolerance) {
-					if (_DeltaMovement.x < 0) {
-						TiltLeftObj.GetComponent<TiltingAircraftController> ().SpriteAnimator.Play ("Aircraft Tilt Left");
-						_CurrentMovementState = AircraftMovementState.TILT_LEFT;
-					} else {
-						TiltLeftObj.GetComponent<TiltingAircraftController> ().SpriteAnimator.Play ("Aircraft Tilt Right");
-						_CurrentMovementState = AircraftMovementState.TILT_RIGHT;
-					}
-				} else {
-					_CurrentMovementState = AircraftMovementState.IDLE;
-				}
-			}
-
+			UpdateInputMovement ();
+			UpdateAnimator ();
 		}
 			
 	}
 
-
-	// set image of aircraft
-	void SetSpriteMovement(AircraftMovementState movement) {
-		switch (movement) {
-		case AircraftMovementState.IDLE:
-			{
-				IdleObj.SetActive (true);
-				TiltLeftObj.SetActive (false);
-				TiltRightObj.SetActive (false);
-			}
-			break;
-		case AircraftMovementState.TILT_LEFT:
-			{
-				IdleObj.SetActive (false);
-				TiltLeftObj.SetActive (true);
-				TiltRightObj.SetActive (false);
-			}
-			break;
-		case AircraftMovementState.TILT_RIGHT:
-			{
-				IdleObj.SetActive (false);
-				TiltLeftObj.SetActive (false);
-				TiltRightObj.SetActive (true);
-			}
-			break;
+	void UpdateInputMovement () {
+		// set movement state
+		if (_XAcceleration > 0) {
+			_CurrentMovementState = AircraftMovementState.TILT_RIGHT;
+		} else if (_XAcceleration < 0) {
+			_CurrentMovementState = AircraftMovementState.TILT_LEFT;
+		} else {
+			_CurrentMovementState = AircraftMovementState.IDLE;
 		}
 	}
-		
+
+	void UpdateAnimator() {
+		if (_CurrentMovementState == AircraftMovementState.IDLE) {
+			AirplaneAnimator.SetBool ("idle", true);
+			AirplaneAnimator.SetBool ("turn_right", false);
+			AirplaneAnimator.SetBool ("turn_left", false);
+		} else if (_CurrentMovementState == AircraftMovementState.TILT_RIGHT) {
+			AirplaneAnimator.SetBool ("idle", false);
+			AirplaneAnimator.SetBool ("turn_right", true);
+			AirplaneAnimator.SetBool ("turn_left", false);
+		}else if (_CurrentMovementState == AircraftMovementState.TILT_LEFT) {
+			AirplaneAnimator.SetBool ("idle", false);
+			AirplaneAnimator.SetBool ("turn_right", false);
+			AirplaneAnimator.SetBool ("turn_left", true);
+		}
+	}
 
 	public void Init() {
 		InputOffset = new Vector3 (Input.acceleration.x, Input.acceleration.y, Input.acceleration.z);
 		transform.position = DefaultStartPos.position;
-
-
 	}
 
 	public void Restart() {
 		_CurrentInvulnerableTime = InitInvulnerableTime;
 		_CurrentInitTime = InitTime;
 
-		Playing = true;
+		IsPlaying = true;
 		Shooting = true;
 		transform.position = DefaultStartPos.position;
 
@@ -429,7 +352,7 @@ public class AircraftController : MonoBehaviour {
 			StopCoroutine (ShootingRoutine);
 
 		// make it unmovable
-		Playing = false;
+		IsPlaying = false;
 
 		Tinker.ParticleManager.Instance.Spawn ("Explosion", this.transform.position);
 		StartCoroutine(WaitAndHide(0.2f));

@@ -21,7 +21,7 @@ public class CafeActionController : MonoBehaviour {
 
 			// receive tap
 			if (Input.anyKeyDown) {
-				EventManager.Instance.TriggerEvent(new ReceiveWakeEvent(3));
+				EventManager.Instance.TriggerEvent(new ReceiveWakeEvent(2));
 			}
 
 			// countdown

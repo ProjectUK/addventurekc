@@ -47,10 +47,8 @@ public class MenuSceneController : MonoBehaviour {
 	public Button GameOver_MenuBtn;
 	public Button GameOver_LeaderboardBtn;
 	public Text TotalScore;
-	public Text DistancesScore;
 	public Text EnemiesScore;
 	public Text BossScore;
-	public Text CoffeeScore;
 
 	[Header("Leaderboard positions")]
 	public RectTransform Leaderboard;
@@ -131,7 +129,7 @@ public class MenuSceneController : MonoBehaviour {
 
 		GameOver_LeaderboardBtn.onClick.AddListener (delegate {
 			AudioManager.Instance.Play("button_click", false, 1f, 0f);
-			GameOverMenu_Hide();
+//			GameOverMenu_Hide();
 			Leaderboard_Show();
 //			_CurrentScreen = GameScreen.LEADERBOARD;
 		});
@@ -243,10 +241,8 @@ public class MenuSceneController : MonoBehaviour {
 		// set score
 
 		TotalScore.text = GameController.TotalScore.ToString();
-		DistancesScore.text = GameController.DistanceScore.ToString();
 		EnemiesScore.text = GameController.EnemiesCount.ToString();
 		BossScore.text = GameController.BossCount.ToString();
-		CoffeeScore.text = GameController.CoffeeCount.ToString();
 
 		GameOverMenu.DOMove(GameOverMenuStartPos.position, 1, false).SetEase(Ease.OutBounce).SetUpdate(true);
 	}

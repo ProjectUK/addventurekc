@@ -18,6 +18,9 @@ public class Blackboard : MonoBehaviour {
 	public float EntitiesSpeedMultiplier = 1;
 	public float BulletSpeedMultiplier = 1;
 	public float BulletSpawnSpeedMultiplier = 1;
+	public float EnemyHealthMultiplier = 1;
+	public float WakeDecreaseMultiplier = 1;
+	public float MaxEnemySpawnRandomWait = 2;
 
 	// Use this for initialization
 	void Start () {

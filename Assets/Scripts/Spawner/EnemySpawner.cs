@@ -24,6 +24,16 @@ public class EnemySpawner : EntitySpawner {
 
 	}
 
+	public override void Update ()
+	{
+		base.Update ();
+
+		// change max time spawn over time
+		MaxRandomWait = Blackboard.Instance.MaxEnemySpawnRandomWait;
+
+	}
+
+
 	public override void Initialize ()
 	{
 		_FirstNonBossSpawned = false;
@@ -189,7 +199,7 @@ public class EnemySpawner : EntitySpawner {
 	#region Event Listeners
 
 	void OnEnemyDeadEvent(EnemyDeadEvent eve) {
-		if (eve.AircraftType != EnemyController.AircraftType.BOSS) {
+		if (eve.EnemyController.EnemyType != EnemyController.AircraftType.BOSS) {
 
 			// only count when there's no boss
 			if (_BossCount <= 0) {
