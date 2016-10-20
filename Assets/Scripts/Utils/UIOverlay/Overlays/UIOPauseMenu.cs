@@ -19,13 +19,13 @@ public class UIOPauseMenu : UIOverlay {
 			EventManager.Instance.TriggerEvent(new MainMenuEvent());
 			AudioManager.Instance.Play("button_click", false, 1f, 0f);
 
-			Hide(GameConst.INTENT_HIDE_PAUSE_MAINMENU);
+			Hide(GameConst.INTENT_HIDE_PAUSE_MAINMENU, false);
 		});
 
 		// resume from pause
 		PauseMenu_ResumeBtn.onClick.AddListener (delegate {
 			EventManager.Instance.TriggerEvent(new ResumeGameEvent());
-			Hide(GameConst.INTENT_HIDE_PAUSE_RESUME);
+			Hide(GameConst.INTENT_HIDE_PAUSE_RESUME, false);
 		});
 
 	}

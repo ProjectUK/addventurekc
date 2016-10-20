@@ -43,6 +43,7 @@ public class NotificationWindowManager : MonoBehaviour {
 
 		ConfirmationButtonText.text = buttonText;
 		ConfirmationButton.gameObject.SetActive (true);
+		ConfirmationButton.onClick.RemoveAllListeners ();
 		ConfirmationButton.onClick.AddListener (() => {
 			if (confirmAction != null) {
 				confirmAction();

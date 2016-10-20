@@ -21,7 +21,7 @@ public abstract class UIOverlay : MonoBehaviour {
 		EventManager.Instance.AddListener<UIOShowEvent> (OnUIOShowEvent);
 	}
 
-	public virtual void Show(string message) {
+	public virtual void Show(string message, bool immediate) {
 		PopulateCanvasGroup ();
 		_CanvasGroup.alpha = 1;
         _CanvasGroup.interactable = true;
@@ -31,11 +31,11 @@ public abstract class UIOverlay : MonoBehaviour {
 		EventManager.Instance.TriggerEvent (new UIOShowEvent (UIOName, message));
 	}
 
-	public void Show() {
-		Show ("");
+	public void Show(bool immediate) {
+		Show ("", immediate);
 	}
 
-	public virtual void Hide(string message) {
+	public virtual void Hide(string message, bool immediate) {
 		PopulateCanvasGroup ();
 		_CanvasGroup.alpha = 0;
         _CanvasGroup.interactable = false;
@@ -45,8 +45,8 @@ public abstract class UIOverlay : MonoBehaviour {
 		EventManager.Instance.TriggerEvent (new UIOHideEvent (UIOName, message));
 	}
 
-	public void Hide() {
-		Hide ("");
+	public void Hide(bool immediate) {
+		Hide ("", immediate);
 	}
 
 	void PopulateCanvasGroup() {

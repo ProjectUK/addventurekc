@@ -7,6 +7,7 @@ public class UIOMainMenu : UISliding {
 	[Header("UI References")]
 	public Button MainMenu_PlayBtn;
 	public Button MainMenu_LeaderboardBtn;
+	public Button MainMenu_ShopBtn;
 	public StackingButtonController StackingButtons;
 
 	public InputField InputInitialField;
@@ -26,7 +27,7 @@ public class UIOMainMenu : UISliding {
 				AudioManager.Instance.Play("button_click", false, 1f, 0f);
 				EventManager.Instance.TriggerEvent(new StartGameEvent());
 
-				Hide(GameConst.INTENT_HIDE_MAINMENU_PLAY);
+				Hide(GameConst.INTENT_HIDE_MAINMENU_PLAY, false);
 //				MainMenu_Hide();
 //				_CurrentScreen = GameScreen.GAME;
 
@@ -40,17 +41,22 @@ public class UIOMainMenu : UISliding {
 			Social.Active.ShowLeaderboardUI();
 		});
 
+		MainMenu_ShopBtn.onClick.AddListener (delegate {
+			Hide(GameConst.INTENT_HIDE_MAINMENU_SHOP, false);
+		});
+
+
 	}
 
-	public override void Hide (string message)
+	public override void Hide (string message, bool immediate)
 	{
-		base.Hide (message);
+		base.Hide (message, immediate);
 		StackingButtons.StopBouncing ();
 	}
 
-	public override void Show (string message)
+	public override void Show (string message, bool immediate)
 	{
-		base.Show (message);
+		base.Show (message, immediate);
 		StackingButtons.ImmediateCollapse ();
 		StackingButtons.StartBouncing ();
 	}

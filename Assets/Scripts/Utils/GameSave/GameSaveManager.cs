@@ -34,6 +34,8 @@ public class GameSaveManager : MonoBehaviour {
 		}
 	}
 
+	[SerializeField] ShopItemData _ShopItemData;
+
 	public int MockupCoin;
 
 	public bool DoReset;
@@ -279,7 +281,6 @@ public class GameSaveManager : MonoBehaviour {
 		PlayerPrefs.SetInt (INT_COIN, totalCoin);
 	}
 
-
 	public bool CheckPurchase(string itemId) {
 		if (PlayerPrefs.HasKey (SHOP_ITEM_KEY_PREFIX+ itemId.ToUpper())) {
 			return true;
@@ -288,8 +289,16 @@ public class GameSaveManager : MonoBehaviour {
 		}
 	}
 
-	public void SetPurchase(string itemId) {
-		PlayerPrefs.SetInt (SHOP_ITEM_KEY_PREFIX + itemId.ToUpper (), 1);
+	public int GetPurchaseLevel(string itemId) {
+		if (CheckPurchase (itemId)) {
+			return PlayerPrefs.GetInt(SHOP_ITEM_KEY_PREFIX + itemId.ToUpper(), 0);
+		} else {
+			return 0;
+		}
+	}
+
+	public void SetPurchase(string itemId, int level) {
+		PlayerPrefs.SetInt (SHOP_ITEM_KEY_PREFIX + itemId.ToUpper (), level);
 	}
 
 	public void DeletePurchase(string itemId) {
@@ -297,33 +306,6 @@ public class GameSaveManager : MonoBehaviour {
 	}
 
 	#endregion
-
-	#region Background
-
-	public void SetBackground (string bgName) {
-		PlayerPrefs.SetString (STR_BACKGROUND, bgName);
-	}
-
-	public string GetBackground () {
-		if (PlayerPrefs.HasKey (STR_BACKGROUND)) {
-			return PlayerPrefs.GetString (STR_BACKGROUND);
-		} else {
-			return "default";
-		}
-	}
-
-	public bool IsCurrentBackground(string bgName) {
-		Debug.Log ("current(" + GetBackground () + ") == " + bgName);
-
-		if (GetBackground () == bgName) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	#endregion
-
 
 	#region Utilities
 	// Warning! Be careful!

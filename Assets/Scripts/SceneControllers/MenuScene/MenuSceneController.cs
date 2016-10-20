@@ -15,7 +15,8 @@ public class MenuSceneController : MonoBehaviour {
 		GAME,
 		GAME_OVER,
 		PAUSE,
-		LEADERBOARD
+		LEADERBOARD,
+		SHOP
 	}
 
 	public GameUIController GmUIController;
@@ -30,10 +31,12 @@ public class MenuSceneController : MonoBehaviour {
 	[Header("In Game Menu Buttons")]
 	public Button InGameMenu_PauseBtn;
 
+	[Header("UI Overlays")]
 	[SerializeField] UIOGameOverMenu _UIOGameOver;
 	[SerializeField] UIOMainMenu _UIOMainMenu;
 	[SerializeField] UIOPauseMenu _UIOPauseMenu;
 	[SerializeField] UIOLeaderboard _UIOLeaderboard;
+	[SerializeField] UIOShopMenu _UIOShopMenu;
 
 
 	private GameScreen _CurrentScreen;
@@ -52,7 +55,7 @@ public class MenuSceneController : MonoBehaviour {
 		InGameMenu_PauseBtn.onClick.AddListener (delegate {
 			if (GmUIController.GameController.IsPlaying) {
 				EventManager.Instance.TriggerEvent (new PauseGameEvent ());
-				_UIOPauseMenu.Show();
+				_UIOPauseMenu.Show(false);
 				_CurrentScreen = GameScreen.PAUSE;
 			}
 		});
@@ -61,9 +64,10 @@ public class MenuSceneController : MonoBehaviour {
 		EventManager.Instance.AddListenerOnce<GameLoseEvent> (OnGameLoseEvent);
 
 		// set initial states of menu
-		_UIOGameOver.Hide();
-		_UIOPauseMenu.Hide ();
-		_UIOLeaderboard.Hide ();
+		_UIOGameOver.Hide(true);
+		_UIOPauseMenu.Hide (true);
+		_UIOLeaderboard.Hide (true);
+		_UIOShopMenu.Hide (true);
 
 	}
 
@@ -84,7 +88,7 @@ public class MenuSceneController : MonoBehaviour {
 			if (_CurrentScreen == GameScreen.GAME) {
 				if (GmUIController.GameController.IsPlaying) {
 					EventManager.Instance.TriggerEvent (new PauseGameEvent ());
-					_UIOPauseMenu.Show();
+					_UIOPauseMenu.Show(false);
 
 					_CurrentScreen = GameScreen.PAUSE;
 				}
@@ -92,22 +96,22 @@ public class MenuSceneController : MonoBehaviour {
 
 				// resume
 				EventManager.Instance.TriggerEvent (new ResumeGameEvent ());
-				_UIOPauseMenu.Hide();
+				_UIOPauseMenu.Hide(false);
 
 				_CurrentScreen = GameScreen.GAME;
 
 			} else if (_CurrentScreen == GameScreen.GAME_OVER) {
 				// back to main menu
-				_UIOMainMenu.Show();
-				_UIOGameOver.Hide();
+				_UIOMainMenu.Show(false);
+				_UIOGameOver.Hide(false);
 
 				_CurrentScreen = GameScreen.MAIN_MENU;
 			}else if (_CurrentScreen == GameScreen.LEADERBOARD) {
 
 				// back to main menu
-				_UIOMainMenu.Show();
+				_UIOMainMenu.Show(false);
 
-				_UIOLeaderboard.Hide ();
+				_UIOLeaderboard.Hide (false);
 				_CurrentScreen = GameScreen.MAIN_MENU;
 			}else if (_CurrentScreen == GameScreen.MAIN_MENU) {
 				// exit
@@ -146,7 +150,7 @@ public class MenuSceneController : MonoBehaviour {
 		}
 		Time.timeScale = 0;
 
-		_UIOGameOver.Show();
+		_UIOGameOver.Show(false);
 
 		if (_GameOverCount%PopupEveryGameOver == 0) {
 			NotificationPopup ();
@@ -174,22 +178,25 @@ public class MenuSceneController : MonoBehaviour {
 			if (eve.Message == GameConst.INTENT_HIDE_GAMEOVER_MAINMENU) {
 				// back to main menu
 				_CurrentScreen = GameScreen.MAIN_MENU;
-				_UIOMainMenu.Show();
+				_UIOMainMenu.Show(false);
 
 			} else if(eve.Message == GameConst.INTENT_HIDE_GAMEOVER_REPLAY)  {
 				// to replay
 				_CurrentScreen = GameScreen.GAME;
-				_UIOMainMenu.Hide();
+				_UIOMainMenu.Hide(false);
 			}
 			break;
 		case GameConst.UIO_MAIN_MENU:
 			if (eve.Message == GameConst.INTENT_HIDE_MAINMENU_PLAY) {
 				_CurrentScreen = GameScreen.GAME;
+			} else if (eve.Message == GameConst.INTENT_HIDE_MAINMENU_SHOP) {
+				_CurrentScreen = GameScreen.SHOP;
+				_UIOShopMenu.Show (false);
 			}
 			break;
 		case GameConst.UIO_PAUSE_MENU:
 			if (eve.Message == GameConst.INTENT_HIDE_PAUSE_MAINMENU) {
-				_UIOMainMenu.Show ();
+				_UIOMainMenu.Show (false);
 				_CurrentScreen = GameScreen.MAIN_MENU;
 			}else if (eve.Message == GameConst.INTENT_HIDE_PAUSE_RESUME) {
 				_CurrentScreen = GameScreen.GAME;
@@ -197,7 +204,13 @@ public class MenuSceneController : MonoBehaviour {
 			break;
 		case GameConst.UIO_LEADERBOARD:
 			if (eve.Message == GameConst.INTENT_HIDE_LEADERBOARD_MAINMENU) {
-				_UIOMainMenu.Show ();
+				_UIOMainMenu.Show (false);
+				_CurrentScreen = GameScreen.MAIN_MENU;
+			}
+			break;
+		case GameConst.UIO_SHOP_MENU:
+			if (eve.Message == GameConst.INTENT_HIDE_SHOP_MAINMENU) {
+				_UIOMainMenu.Show (false);
 				_CurrentScreen = GameScreen.MAIN_MENU;
 			}
 			break;

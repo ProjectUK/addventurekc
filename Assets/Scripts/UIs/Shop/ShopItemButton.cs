@@ -31,7 +31,8 @@ public class ShopItemButton : MonoBehaviour {
 	public Text PriceText;
 	public Image ItemImage;
 
-	public List<PriceModel> Prices = new List<PriceModel>();
+//	public List<PriceModel> Prices = new List<PriceModel>();
+	public ShopItemModel ShopItem;
 
 	PriceModel _CurrentPriceModel;
 
@@ -52,7 +53,7 @@ public class ShopItemButton : MonoBehaviour {
 
 		// set buy button action
 		BuyButton.onClick.AddListener (() => {
-			EventManager.Instance.TriggerEvent (new BuyItemEvent (_CurrentPriceModel.ID));
+			EventManager.Instance.TriggerEvent (new BuyItemEvent (ShopItem.Name));
 		});
 	}
 
@@ -65,40 +66,15 @@ public class ShopItemButton : MonoBehaviour {
 
 	void UpdateCurrentPrice() {
 		// Set the price if it has multiple price count
-		if (Prices.Count > 1) {
+		if (ShopItem.Prices.Count > 1) {
 
-			//Get from savemanager the highest purchased item level
-			Prices.Sort ((PriceModel x, PriceModel y) => {
-				return x.Level.CompareTo (y.Level);
-			});
 
-			bool foundHighestPurchasedItem = false;
-			for (int itPrices = Prices.Count - 1; itPrices > 0; itPrices--) {
-				PriceModel priceModel = Prices [itPrices];
-				if (GameSaveManager.Instance.CheckPurchase (priceModel.ID)) {
+			int currentItemLevel = GameSaveManager.Instance.GetPurchaseLevel (ShopItem.Name);
+			_CurrentPriceModel = ShopItem.GetPurchasedLevel(currentItemLevel+1);
 
-					if (itPrices < Prices.Count - 1) {
-						PriceModel nextPriceModel = Prices [itPrices + 1];
-						_CurrentPriceModel = nextPriceModel;
-					} else {
-						// udah full, diapain?
-						_CurrentPriceModel = new PriceModel();
-						_CurrentPriceModel.Price = -1;
-						_CurrentPriceModel.Level = -1;
-						_CurrentPriceModel.ID = "FULL";
-
-						BuyButton.interactable = false;
-					}
-
-					foundHighestPurchasedItem = true;
-					break;
-				}
-			}
-
-			// default 0, then choose 1 (the next higher rank)
-			if (!foundHighestPurchasedItem) {
-				_CurrentPriceModel = Prices [1];
-			} else {
+			// reached highest level
+			if (_CurrentPriceModel.Level == -1) {
+				BuyButton.interactable = false;
 			}
 
 			// set price
@@ -175,17 +151,25 @@ public class ShopItemButton : MonoBehaviour {
 	}
 
 	void OnBuyItemEvent(BuyItemEvent eve) {
-		if (_CurrentPriceModel.ID == eve.ItemId) {
+		if (ShopItem.Name == eve.ItemName) {
 
 			//TODO: CEK DUITNYA ADA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			if (GameSaveManager.Instance.CheckCoinSufficient(_CurrentPriceModel.Price) ) {
-				// kurangi duitnya
-				GameSaveManager.Instance.DecreaseCoins(_CurrentPriceModel.Price);
 
-				GameSaveManager.Instance.SetPurchase (eve.ItemId);
+				// Cek level sekarang belum melebihi
+				int previousLevel = GameSaveManager.Instance.GetPurchaseLevel(ShopItem.Name);
+				if (previousLevel < ShopItem.Prices.Count-1) {
+					// kurangi duitnya
+					GameSaveManager.Instance.DecreaseCoins(_CurrentPriceModel.Price);
 
-				// ubah jadi next price
-				UpdateCurrentPrice();
+					// set levelnya
+					int currentLevel = previousLevel + 1;
+
+					GameSaveManager.Instance.SetPurchase (ShopItem.Name, currentLevel);
+
+					// ubah jadi next price
+					UpdateCurrentPrice();
+				}
 			}
 		}
 	}

@@ -36,17 +36,14 @@ public class ShopItemButtonStacker : MonoBehaviour {
 
 			//TODO: Image
 //			sib.ItemImage.....
+			sib.ShopItem = shopItemModel;
+			//			sib.Prices = shopItemModel.Prices;
 			sib.SetImage (shopItemModel.Image);
 			sib.DetailsText.text = shopItemModel.Info;
 			sib.NameText.text = shopItemModel.Name;
 
-			sib.Prices = shopItemModel.Prices;
-
 			sib.Init ();
 
-
-
-				
 
 
 

@@ -49,6 +49,10 @@ public class FollowWindowManager : MonoBehaviour {
 	public void Show(string headerText, string fbButtonText, string twButtonText, string igButtonText, Action fbAction, Action twAction, Action igAction) {
 		HeaderText.text 	= headerText;
 
+		FacebookButton.onClick.RemoveAllListeners ();
+		TwitterButton.onClick.RemoveAllListeners ();
+		InstagramButton.onClick.RemoveAllListeners ();
+
 		if (fbButtonText != "") {
 			FacebookButtonText.text = fbButtonText;
 			FacebookButton.gameObject.SetActive (true);
@@ -60,7 +64,7 @@ public class FollowWindowManager : MonoBehaviour {
 		}
 
 		if (twButtonText != "") {
-			TwitterButtonText.text = fbButtonText;
+			TwitterButtonText.text = twButtonText;
 			TwitterButton.gameObject.SetActive (true);
 			TwitterButton.onClick.AddListener (() => {
 				if (twAction != null) {
@@ -70,7 +74,7 @@ public class FollowWindowManager : MonoBehaviour {
 		}
 
 		if (igButtonText != "") {
-			InstagramButtonText.text = fbButtonText;
+			InstagramButtonText.text = igButtonText;
 			InstagramButton.gameObject.SetActive (true);
 			InstagramButton.onClick.AddListener (() => {
 				if (igAction != null) {

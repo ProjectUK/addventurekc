@@ -25,7 +25,7 @@ public class GameObjectPool : MonoBehaviour {
 	private void FillPool(int count) {
 		for (int i = 0; i < count; i++) {
 			GameObject newPrefab = Instantiate(Prefab) as GameObject;
-			newPrefab.transform.parent = this.transform;
+			newPrefab.transform.SetParent (this.transform);
 			newPrefab.SetActive(false);
 			_Pool.Add(newPrefab);
 		}

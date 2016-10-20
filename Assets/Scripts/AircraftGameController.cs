@@ -59,14 +59,12 @@ public class AircraftGameController : MonoBehaviour {
 		EventManager.Instance.AddListener<ReceiveWakeEvent> (OnReceiveWakeEvent);
 		EventManager.Instance.AddListener<EnemyDeadEvent> (OnEnemyDeadEvent);
 
-		LifeRemaining = MaxLife;
+//		LifeRemaining = MaxLife;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-//		TotalScore = DistanceScore + EnemiesScore + BossScore + CoffeeScore;
-//		TotalScore = EnemiesCount + BossCount + CoffeeCount;
 		TotalScore = (EnemiesCount * ScorePerEnemy) + (BossCount * ScorePerBoss);
 
 		UpdatePlaying ();
@@ -120,7 +118,21 @@ public class AircraftGameController : MonoBehaviour {
 
 	public void ResetGame() {
 
-		LifeRemaining = MaxLife;
+//		LifeRemaining = MaxLife;
+//		LifeRemaining = MaxLife;
+
+		// Get from purchases
+		int purchasedLifeLevel = GameSaveManager.Instance.GetPurchaseLevel(GameConst.ITEM_ALERTNESS);
+		Debug.Log ("purchased life:" + purchasedLifeLevel);
+		if (purchasedLifeLevel == 0) {
+			LifeRemaining = 1;
+		}else if (purchasedLifeLevel == 1) {
+			LifeRemaining = 2;
+		}else if (purchasedLifeLevel == 2) {
+			LifeRemaining = 3;
+		}
+
+
 		CurrentWakeValue = MaxWakeValue;
 
 		TotalScore = 0;

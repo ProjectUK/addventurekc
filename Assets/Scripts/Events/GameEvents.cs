@@ -120,9 +120,9 @@ public class AircraftSetControlSwipeEvent:GameEvent{
 #region Shop
 
 public class BuyItemEvent:GameEvent{
-	public string ItemId;
-	public BuyItemEvent(string itemId) {
-		this.ItemId = itemId;
+	public string ItemName;
+	public BuyItemEvent(string itemName) {
+		this.ItemName = itemName;
 	}
 }
 
