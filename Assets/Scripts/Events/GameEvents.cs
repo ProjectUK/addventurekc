@@ -106,16 +106,6 @@ public class PowerUpNotification: GameEvent{
 	}
 }
 
-#region Aircraft Option
-
-public class AircraftSetControlSwipeEvent:GameEvent{
-	public bool IsSwipe;
-	public AircraftSetControlSwipeEvent(bool isSwipe) {
-		this.IsSwipe = isSwipe;
-	}
-}
-
-#endregion
 
 #region Shop
 

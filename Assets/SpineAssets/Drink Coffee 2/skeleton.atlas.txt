@@ -1,0 +1,55 @@
+
+skeleton.png
+size: 1106,464
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+crow_0000_mug
+  rotate: false
+  xy: 688, 62
+  size: 215, 121
+  orig: 215, 121
+  offset: 0, 0
+  index: -1
+crow_0001_smoke
+  rotate: false
+  xy: 753, 185
+  size: 261, 118
+  orig: 261, 118
+  offset: 0, 0
+  index: -1
+crow_0002_shoulder
+  rotate: false
+  xy: 456, 6
+  size: 230, 198
+  orig: 230, 198
+  offset: 0, 0
+  index: -1
+crow_0003_googles
+  rotate: false
+  xy: 456, 206
+  size: 295, 256
+  orig: 295, 256
+  offset: 0, 0
+  index: -1
+crow_0004_scraf
+  rotate: false
+  xy: 753, 305
+  size: 347, 157
+  orig: 347, 157
+  offset: 0, 0
+  index: -1
+crow_0005_body
+  rotate: false
+  xy: 905, 61
+  size: 199, 122
+  orig: 199, 122
+  offset: 0, 0
+  index: -1
+crow_0006_plane
+  rotate: false
+  xy: 2, 2
+  size: 452, 460
+  orig: 452, 460
+  offset: 0, 0
+  index: -1

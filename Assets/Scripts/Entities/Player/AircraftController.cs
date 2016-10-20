@@ -6,7 +6,6 @@ public class AircraftController : MonoBehaviour {
 
 	public enum ControlMethod
 	{
-		TILT,
 		SWIPE
 	}
 
@@ -18,7 +17,6 @@ public class AircraftController : MonoBehaviour {
 	}
 
 	public bool IsPlaying;
-//	public bool Playing;
 	public bool Shooting;
 	public bool InitialGameStarting;
 	public bool UseDeltaMovement = false;
@@ -55,7 +53,6 @@ public class AircraftController : MonoBehaviour {
 	// offset from the first position of player's device
 	public Vector3 InputOffset;
 
-	public Vector3 TiltSpeed;
 	public Vector3 TouchSpeed;
 
 	[Header("Gun")]
@@ -92,6 +89,9 @@ public class AircraftController : MonoBehaviour {
 	float _CurrentInvulnerableTime;
 	float _CurrentInitTime;
 
+	// Purchased item upgrades
+	float PurchasedSpeedMultiplier = 1;
+
 	#region Unity Methods
 
 	// Use this for initialization
@@ -100,19 +100,12 @@ public class AircraftController : MonoBehaviour {
 
 		EventManager.Instance.AddListener<ShieldPowerEvent> (OnShieldPowerEvent);
 		EventManager.Instance.AddListener<BulletBoostEvent> (OnBulletBoostEvent);
-		EventManager.Instance.AddListener<AircraftSetControlSwipeEvent> (OnAircraftSetControlEvent);
 
 		// save shooting delays
 		for (int i = 0; i < Guns.Length; i++) {
 			float delay = Guns [i].ShootingDelay;
 			_TmpShootingDelays.Add (delay);
 		}
-
-//		SetControlMode (GameSaveManager.Instance.IsControlSwipe());
-
-		// force to swipe
-		SetControlMode(true);
-
 
 	}
 
@@ -173,43 +166,20 @@ public class AircraftController : MonoBehaviour {
 		if (_CurrentInitTime <= 0) {
 
 			if (IsPlaying && !InitialGameStarting) {
+				_XAcceleration = (Joystick.DeltaTouch.x) * TouchSpeed.x * Time.deltaTime * PurchasedSpeedMultiplier;
+				float xPos = this.transform.position.x + _XAcceleration;
+				xPos = Mathf.Clamp (xPos, MinX.position.x, MaxX.position.x);
 
-				if (Control == ControlMethod.TILT) {
-					_XAcceleration = (Input.acceleration.x - InputOffset.x) * TiltSpeed.x * Time.deltaTime;
-					float xPos = this.transform.position.x + _XAcceleration;
-					xPos = Mathf.Clamp (xPos, MinX.position.x, MaxX.position.x);
-											
-					float yAcceleration = (Input.acceleration.y - InputOffset.y) * TiltSpeed.y * Time.deltaTime;
-					float yPos = this.transform.position.y + yAcceleration;
-					yPos = Mathf.Clamp (yPos, MinY.position.y, MaxY.position.y);
-						
-					Vector3 position = new Vector3 (
-						                   xPos,
-						                   yPos,
-						                   this.transform.position.z);
-						
-					transform.position = position;
+				float yAcceleration = (Joystick.DeltaTouch.y) * TouchSpeed.y * Time.deltaTime * PurchasedSpeedMultiplier;
+				float yPos = this.transform.position.y + yAcceleration;
+				yPos = Mathf.Clamp (yPos, MinY.position.y, MaxY.position.y);
 
-				} else if (Control == ControlMethod.SWIPE) {
-					
+				Vector3 position = new Vector3 (
+					xPos,
+					yPos,
+					this.transform.position.z);
 
-					_XAcceleration = (Joystick.DeltaTouch.x) * TouchSpeed.x * Time.deltaTime;
-					float xPos = this.transform.position.x + _XAcceleration;
-					xPos = Mathf.Clamp (xPos, MinX.position.x, MaxX.position.x);
-
-					float yAcceleration = (Joystick.DeltaTouch.y) * TouchSpeed.y * Time.deltaTime;
-					float yPos = this.transform.position.y + yAcceleration;
-					yPos = Mathf.Clamp (yPos, MinY.position.y, MaxY.position.y);
-
-					Vector3 position = new Vector3 (
-						xPos,
-						yPos,
-						this.transform.position.z);
-
-					transform.position = position;
-						
-				}
-
+				transform.position = position;
 			}
 		} else {
 			_CurrentInitTime -= Time.deltaTime;
@@ -256,8 +226,21 @@ public class AircraftController : MonoBehaviour {
 	}
 
 	public void Init() {
+		// Turn on joystick
+		Joystick.IsRunning = true;
+
 		InputOffset = new Vector3 (Input.acceleration.x, Input.acceleration.y, Input.acceleration.z);
 		transform.position = DefaultStartPos.position;
+
+		// get purchased speed (Engine)
+		int purchasedSpeed = GameSaveManager.Instance.GetPurchaseLevel(GameConst.ITEM_ENGINE);
+		if (purchasedSpeed == 0) {
+			PurchasedSpeedMultiplier = 1f;
+		}else if (purchasedSpeed == 1) {
+			PurchasedSpeedMultiplier = 1.25f;
+		}else if (purchasedSpeed == 2) {
+			PurchasedSpeedMultiplier = 1.5f;
+		}
 	}
 
 	public void Restart() {
@@ -361,17 +344,6 @@ public class AircraftController : MonoBehaviour {
 		this.gameObject.SetActive (false);
 	}
 
-	void SetControlMode(bool isSwipe) {
-		// set currently saved movement mode
-		if (isSwipe) {
-			Control = ControlMethod.SWIPE;
-			Joystick.IsRunning = true;
-		} else {
-			Control = ControlMethod.TILT;
-			Joystick.IsRunning = false;
-		}
-	}
-
 	#region Event Listeners
 	void OnShieldPowerEvent(ShieldPowerEvent eve ){
 		_CurrentInvulnerableTime = eve.ShieldTime;
@@ -387,9 +359,6 @@ public class AircraftController : MonoBehaviour {
 			currentGunModel.BoostTime = eve.BoostTime;
 		}
 	}
-
-	void OnAircraftSetControlEvent(AircraftSetControlSwipeEvent eve) {
-//		SetControlMode (eve.IsSwipe);
-	}
+		
 	#endregion
 }

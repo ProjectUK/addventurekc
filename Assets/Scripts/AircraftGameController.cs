@@ -97,6 +97,7 @@ public class AircraftGameController : MonoBehaviour {
 	void UpdateUI() {
 		WakeOMeterBar.Value = CurrentWakeValue / MaxWakeValue;
 		LifeUI.Value = LifeRemaining;
+		LifeUI.MaxValue = MaxLife;
 		ScoreText.text = TotalScore.ToString();
 	}
 
@@ -118,20 +119,17 @@ public class AircraftGameController : MonoBehaviour {
 
 	public void ResetGame() {
 
-//		LifeRemaining = MaxLife;
-//		LifeRemaining = MaxLife;
-
 		// Get from purchases
 		int purchasedLifeLevel = GameSaveManager.Instance.GetPurchaseLevel(GameConst.ITEM_ALERTNESS);
 		Debug.Log ("purchased life:" + purchasedLifeLevel);
 		if (purchasedLifeLevel == 0) {
-			LifeRemaining = 1;
+			MaxLife = 1;
 		}else if (purchasedLifeLevel == 1) {
-			LifeRemaining = 2;
+			MaxLife = 2;
 		}else if (purchasedLifeLevel == 2) {
-			LifeRemaining = 3;
+			MaxLife = 3;
 		}
-
+		LifeRemaining = MaxLife;
 
 		CurrentWakeValue = MaxWakeValue;
 

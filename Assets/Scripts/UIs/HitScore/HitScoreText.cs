@@ -45,22 +45,20 @@ public class HitScoreText : MonoBehaviour {
 		this.transform.localScale = new Vector3 (0.001f, 0.001f, 0.001f);
 
 		// tween in
-		DOTween.To (() => ScoreText.color, x => ScoreText.color = x, new Color (prevColor.r, prevColor.g, prevColor.b, 1f), InDuration).SetEase(InEase);
-		DOTween.To (() => this.transform.localScale, x => this.transform.localScale = x, EndScale, InDuration).SetEase(InEase);
+		DOTween.To (() => ScoreText.color, x => ScoreText.color = x, new Color (prevColor.r, prevColor.g, prevColor.b, 1f), InDuration).SetEase(InEase).SetUpdate(true);
+		DOTween.To (() => this.transform.localScale, x => this.transform.localScale = x, EndScale, InDuration).SetEase(InEase).SetUpdate(true);
 
-		Tween moveInTween = this.transform.DOMove (endPos, InDuration, false).SetEase (InEase);
+		Tween moveInTween = this.transform.DOMove (endPos, InDuration, false).SetEase (InEase).SetUpdate(true);
 		yield return moveInTween.WaitForCompletion ();
 
-		yield return new WaitForSeconds (WaitDuration);
+		yield return IndieTime.Instance.WaitForSeconds (WaitDuration);
 
 		// tween out
-		DOTween.To (() => ScoreText.color, x => ScoreText.color = x, new Color (prevColor.r, prevColor.g, prevColor.b, 0f), OutDuration).SetEase(OutEase);
-		DOTween.To (() => this.transform.localScale, x => this.transform.localScale = x, new Vector3 (0.001f, 0.001f, 0.001f), OutDuration).SetEase(OutEase);
+		DOTween.To (() => ScoreText.color, x => ScoreText.color = x, new Color (prevColor.r, prevColor.g, prevColor.b, 0f), OutDuration).SetEase(OutEase).SetUpdate(true);
+		DOTween.To (() => this.transform.localScale, x => this.transform.localScale = x, new Vector3 (0.001f, 0.001f, 0.001f), OutDuration).SetEase(OutEase).SetUpdate(true);
 
-		Tween moveOutTween = this.transform.DOMove (endPos, OutDuration, false).SetEase (OutEase);
+		Tween moveOutTween = this.transform.DOMove (endPos, OutDuration, false).SetEase (OutEase).SetUpdate(true);
 		yield return moveOutTween.WaitForCompletion ();
-
-
 
 		ScoreText.color = new Color (prevColor.r, prevColor.g, prevColor.b, 0);
 		this.gameObject.SetActive (false);
