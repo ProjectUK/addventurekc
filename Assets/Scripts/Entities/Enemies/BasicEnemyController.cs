@@ -15,6 +15,7 @@ public class BasicEnemyController : EnemyController{
 
 	public override void Init ()
 	{
+		StartFeelingBullet ();
 		if (IsMoving)
 			Move ();
 		ResetHealth ();

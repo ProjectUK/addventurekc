@@ -35,6 +35,7 @@ public class AircraftController : MonoBehaviour {
 	[Header("Super power")]
 	public GameObject ShieldObj;
 	public GameObject ShadowAircraft;
+	public GameObject LaserObj;
 
 	[Header("Animator")]
 	public Animator AirplaneAnimator;
@@ -109,6 +110,9 @@ public class AircraftController : MonoBehaviour {
 	float _ShadowAircraftPowerTime = 0;
 	bool _ShadowAircraftActive = false;
 
+	float _LaserPowerTime = 0;
+	bool _LaserActive = false;
+
 	#region Unity Methods
 
 	// Use this for initialization
@@ -120,6 +124,7 @@ public class AircraftController : MonoBehaviour {
 		EventManager.Instance.AddListener<SpeedBoostPowerEvent> (OnSpeedBoostPowerEvent);
 		EventManager.Instance.AddListener<SpreadGunPowerEvent> (OnSpreadGunPowerEvent);
 		EventManager.Instance.AddListener<ShadowAircraftPowerEvent> (OnShadowAircraftPowerEvent);
+		EventManager.Instance.AddListener<LaserPowerEvent> (OnLaserPowerEvent);
 
 		// save shooting delays
 		for (int i = 0; i < Guns.Length; i++) {
@@ -250,6 +255,7 @@ public class AircraftController : MonoBehaviour {
 		UpdateSpeedboostPower ();
 		UpdateSpreadGunPower ();
 		UpdateShadowAircraftPower ();
+		UpdateLaserPower ();
 	}
 
 	public void Init() {
@@ -295,6 +301,7 @@ public class AircraftController : MonoBehaviour {
 
 		SetSpreadGunActive (false);
 		SetShadowAircraftActive (false);
+		SetLaserActive (false);
 	}
 
 	public void Restart() {
@@ -462,6 +469,10 @@ public class AircraftController : MonoBehaviour {
 		_ShadowAircraftPowerTime = eve.BoostTime;
 	}
 
+	void OnLaserPowerEvent(LaserPowerEvent eve) {
+		_LaserPowerTime = eve.BoostTime;
+	}
+
 	#endregion
 
 	#region Powerups update
@@ -494,9 +505,7 @@ public class AircraftController : MonoBehaviour {
 
 		}
 	}
-
-
-
+		
 	void UpdateShadowAircraftPower() {
 		if (_ShadowAircraftPowerTime > 0) {
 			_ShadowAircraftPowerTime -= Time.deltaTime;
@@ -514,6 +523,23 @@ public class AircraftController : MonoBehaviour {
 		}
 	}
 
+	void UpdateLaserPower() {
+		if (_LaserPowerTime > 0) {
+			_LaserPowerTime -= Time.deltaTime;
+
+			// turn on laser
+			if (!_LaserActive) {
+				SetLaserActive (true);
+			}
+
+		} else {
+			// turn off laser
+			if (_LaserActive) {
+				SetLaserActive (false);
+			}
+		}
+	}
+
 	#endregion
 
 	#region Powerups setup
@@ -526,6 +552,11 @@ public class AircraftController : MonoBehaviour {
 	void SetShadowAircraftActive(bool setActive) {
 		ShadowAircraft.SetActive (setActive);
 		_ShadowAircraftActive = setActive;
+	}
+
+	void SetLaserActive(bool setActive) {
+		LaserObj.SetActive (setActive);
+		_LaserActive = setActive;
 	}
 	#endregion
 

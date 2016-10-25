@@ -6,6 +6,8 @@ public class BulletController : MonoBehaviour {
 	public float Damage = 0;
 
 	public bool AffectedByLevelSpeed;
+	public bool ExplodeOnHit = true;
+	public bool KeepOn = false;
 
 	// Use this for initialization
 	void Start () {
@@ -25,25 +27,33 @@ public class BulletController : MonoBehaviour {
 				Speed.y * Time.deltaTime, 0);
 		}
 
-		// hardcoded out of area, just to make sure
-		if (this.transform.position.y > 7 || this.transform.position.y < -7) {
-			this.gameObject.SetActive (false);
+		if (!KeepOn) {
+			// hardcoded out of area, just to make sure
+			if (this.transform.position.y > 7 || this.transform.position.y < -7) {
+				this.gameObject.SetActive (false);
+			}
 		}
 	}
 
 	public void Explode() {
-		Tinker.ParticleManager.Instance.Spawn ("SpikyExplosion", this.transform.position);
-		this.gameObject.SetActive (false);
-	}
-
-	// Remove when out of specified area
-	public void OnTriggerEnter2D(Collider2D coll) {
-		if (coll.tag == "AreaBoundary") {
+		if (ExplodeOnHit && !KeepOn) {
+			Tinker.ParticleManager.Instance.Spawn ("SpikyExplosion", this.transform.position);
 			this.gameObject.SetActive (false);
 		}
 	}
 
+	// Remove when out of specified area
+	public void OnTriggerEnter2D(Collider2D coll) {
+		if (!KeepOn) {
+			if (coll.tag == "AreaBoundary") {
+				this.gameObject.SetActive (false);
+			}
+		}
+	}
+
 	public void OnBulletHideEvent(HideBulletEvent eve) {
-		this.gameObject.SetActive (false);
+		if (!KeepOn) {
+			this.gameObject.SetActive (false);
+		}
 	}
 }

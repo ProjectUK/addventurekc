@@ -15,6 +15,7 @@ public class EnemyShootingController : BasicEnemyController{
 	public override void Init ()
 	{
 		StartShooting ();
+		StartFeelingBullet ();
 		ResetHealth ();
 	}
 

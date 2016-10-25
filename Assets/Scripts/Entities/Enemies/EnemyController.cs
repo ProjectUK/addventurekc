@@ -28,10 +28,16 @@ public abstract class EnemyController : Entity{
 
 	BoxCollider2D _Collider;
 
+	// for delay bullet feel
+	bool _BulletFeelActive;
+	Coroutine FeelingBulletRoutine;
+
 	// Use this for initialization
 	public virtual void Start () {
 		_Collider = GetComponent<BoxCollider2D> ();
 	}
+
+
 
 	void OnTriggerEnter2D(Collider2D coll) {
 		// check hit player
@@ -44,6 +50,28 @@ public abstract class EnemyController : Entity{
 			HitPlayerBullet (bc);
 		}
 	}
+
+	void OnTriggerStay2D(Collider2D coll) {
+		if(coll.tag == "Bullet/Player") {
+
+			if (_BulletFeelActive) {
+				BulletController bc = coll.GetComponent<BulletController> ();
+				bc.Explode ();
+				
+				HitPlayerBullet (bc);
+
+				_BulletFeelActive = false;
+			}
+		}
+	}
+
+	IEnumerator FeelingBullet() {
+		while (true) {
+			yield return new WaitForSeconds (0.5f);
+			_BulletFeelActive = true;
+		}
+	}
+
 
 	public void ResetHealth() {
 		float totalMaxHealth = Mathf.Ceil(this.MaxHealth * Blackboard.Instance.EnemyHealthMultiplier);
@@ -96,4 +124,12 @@ public abstract class EnemyController : Entity{
 			Explode ();
 		}
 	}
+
+	protected void StartFeelingBullet() {
+		if (FeelingBulletRoutine != null) {
+			StopCoroutine (FeelingBulletRoutine);
+		}
+		FeelingBulletRoutine = StartCoroutine (FeelingBullet ());
+	}
+
 }

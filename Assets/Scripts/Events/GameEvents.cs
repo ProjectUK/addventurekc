@@ -97,6 +97,13 @@ public class ShadowAircraftPowerEvent : GameEvent {
 	}
 }
 
+public class LaserPowerEvent: GameEvent{
+	public float BoostTime;
+	public LaserPowerEvent(float boostTime) {
+		this. BoostTime = boostTime;
+	}
+}
+
 #endregion
 
 public class HideBulletEvent : GameEvent {
