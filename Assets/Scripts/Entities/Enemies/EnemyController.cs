@@ -15,8 +15,8 @@ public abstract class EnemyController : Entity{
 
 	public float Speed = -10;
 	public AircraftType EnemyType;
-	public int MaxHealth = 1;
-	public int CurrentHealth = 0;
+	public float MaxHealth = 1;
+	public float CurrentHealth = 0;
 
 
 	public bool IsMoving;
@@ -41,12 +41,12 @@ public abstract class EnemyController : Entity{
 			BulletController bc = coll.GetComponent<BulletController> ();
 			bc.Explode ();
 
-			HitPlayerBullet (coll);
+			HitPlayerBullet (bc);
 		}
 	}
 
 	public void ResetHealth() {
-		int totalMaxHealth = (int) Mathf.Ceil(this.MaxHealth * Blackboard.Instance.EnemyHealthMultiplier);
+		float totalMaxHealth = Mathf.Ceil(this.MaxHealth * Blackboard.Instance.EnemyHealthMultiplier);
 		this.CurrentHealth = totalMaxHealth;
 	}
 
@@ -82,9 +82,9 @@ public abstract class EnemyController : Entity{
 		this.gameObject.SetActive (false);
 	}
 
-	void HitPlayerBullet(Collider2D coll) {
+	void HitPlayerBullet(BulletController bc) {
 
-		this.CurrentHealth -= 1;
+		this.CurrentHealth -= bc.Damage;
 
 		if (EnemyType == AircraftType.BOSS) {
 			AudioManager.Instance.Play ("hit_boss", false, 0.5f, 0.03f);

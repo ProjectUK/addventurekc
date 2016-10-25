@@ -68,8 +68,7 @@ public class ShopItemButton : MonoBehaviour {
 		// Set the price if it has multiple price count
 		if (ShopItem.Prices.Count > 1) {
 
-
-			int currentItemLevel = GameSaveManager.Instance.GetPurchaseLevel (ShopItem.Name);
+			int currentItemLevel = GameSaveManager.Instance.GetPurchaseLevel (ShopItem.ID);
 			_CurrentPriceModel = ShopItem.GetPurchasedLevel(currentItemLevel+1);
 
 			// reached highest level
@@ -81,7 +80,19 @@ public class ShopItemButton : MonoBehaviour {
 			PriceText.text = _CurrentPriceModel.Price.ToString ();
 
 		} else {
-			// cek udah beli aja
+			// cek udah beli aja karena cuma ada 1 level
+
+			_CurrentPriceModel = ShopItem.GetPurchasedLevel (0);
+
+			bool purchased = GameSaveManager.Instance.CheckPurchase (ShopItem.ID);
+			if (purchased) {
+				BuyButton.interactable = false;
+				PriceText.text = "";
+			} else {
+				BuyButton.interactable = true;
+				PriceText.text = _CurrentPriceModel.Price.ToString ();
+			}
+
 		}
 	}
 
@@ -156,20 +167,38 @@ public class ShopItemButton : MonoBehaviour {
 			//TODO: CEK DUITNYA ADA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			if (GameSaveManager.Instance.CheckCoinSufficient(_CurrentPriceModel.Price) ) {
 
-				// Cek level sekarang belum melebihi
-				int previousLevel = GameSaveManager.Instance.GetPurchaseLevel(ShopItem.Name);
-				if (previousLevel < ShopItem.Prices.Count-1) {
+				// cek multilevel
+				if (ShopItem.Prices.Count > 1) {
+					// Cek level sekarang belum melebihi
+					int previousLevel = GameSaveManager.Instance.GetPurchaseLevel (ShopItem.ID);
+					if (previousLevel < ShopItem.Prices.Count - 1) {
+						// kurangi duitnya
+						GameSaveManager.Instance.DecreaseCoins (_CurrentPriceModel.Price);
+						
+						// set levelnya
+						int currentLevel = previousLevel + 1;
+						
+						GameSaveManager.Instance.SetPurchase (ShopItem.ID, currentLevel);
+						
+						// ubah jadi next price
+						UpdateCurrentPrice ();
+
+						Debug.Log ("Beli level");
+					}
+				} else {
+					// satu level aja
+
 					// kurangi duitnya
-					GameSaveManager.Instance.DecreaseCoins(_CurrentPriceModel.Price);
+					GameSaveManager.Instance.DecreaseCoins (_CurrentPriceModel.Price);
+					GameSaveManager.Instance.SetPurchase (ShopItem.ID, 1);
 
-					// set levelnya
-					int currentLevel = previousLevel + 1;
+					UpdateCurrentPrice ();
 
-					GameSaveManager.Instance.SetPurchase (ShopItem.Name, currentLevel);
+					Debug.Log ("Beli satuan");
 
-					// ubah jadi next price
-					UpdateCurrentPrice();
 				}
+
+
 			}
 		}
 	}

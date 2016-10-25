@@ -43,7 +43,7 @@ namespace Spine.Unity.Editor {
 	public class SkeletonGraphicInspector : UnityEditor.Editor {
 		SerializedProperty material_, color_;
 		SerializedProperty skeletonDataAsset_, initialSkinName_;
-		SerializedProperty startingAnimation_, startingLoop_, timeScale_, freeze_;
+		SerializedProperty startingAnimation_, startingLoop_, timeScale_, freeze_, unscaledTime_;
 	#if !PREUNITY_5_2
 		SerializedProperty raycastTarget_;
 
@@ -67,6 +67,7 @@ namespace Spine.Unity.Editor {
 			startingLoop_ = so.FindProperty("startingLoop");
 			timeScale_ = so.FindProperty("timeScale");
 			freeze_ = so.FindProperty("freeze");
+			unscaledTime_ = so.FindProperty ("unscaledTime");
 		}
 
 		public override void OnInspectorGUI () {
@@ -90,6 +91,8 @@ namespace Spine.Unity.Editor {
 			EditorGUILayout.PropertyField(startingAnimation_);
 			EditorGUILayout.PropertyField(startingLoop_);
 			EditorGUILayout.PropertyField(timeScale_);
+			EditorGUILayout.Space();
+			EditorGUILayout.PropertyField(unscaledTime_);
 			EditorGUILayout.Space();
 			EditorGUILayout.PropertyField(freeze_);
 			EditorGUILayout.Space();

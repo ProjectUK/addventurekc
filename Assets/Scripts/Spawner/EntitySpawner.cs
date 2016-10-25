@@ -92,8 +92,6 @@ public class EntitySpawner : MonoBehaviour {
 
 	private int _CurrentPercentageTotal;
 
-//	private Coroutine _UpdateRoutine;
-
 	#region Unity Methods
 
 	public virtual void Update() {
@@ -124,13 +122,10 @@ public class EntitySpawner : MonoBehaviour {
 
 		SpawnCount = 0;
 
-//		_UpdateRoutine = StartCoroutine (UpdateSpawn ());
 	}
 
 	public void StopSpawn() {
 		_IsSpawning = false;
-//		if (_UpdateRoutine != null) 
-//			StopCoroutine (_UpdateRoutine);
 	}
 
 	void CreatePools() {
@@ -184,32 +179,12 @@ public class EntitySpawner : MonoBehaviour {
 		return null;
 	}
 
-//	public virtual IEnumerator UpdateSpawn() {
-//		while (true) {
-//			yield return null;
-//
-//			if (IsPlaying) {
-//				yield return new WaitForSeconds (Random.Range (MinRandomWait, MaxRandomWait));
-//
-//				int randomNumber = Random.Range (0, RandomRange);
-//
-//				if (randomNumber < SpawnWhenLessThan) {
-//					
-//					Entity currentSpawnedEntity = Spawn ();
-//					
-//					yield return StartCoroutine (SpawnWaiter (currentSpawnedEntity));
-//				}									
-//			}
-//		}
-//	}
-
 	public virtual void UpdateSpawn() {
 
 		if (!_IsSpawning)
 			return;
 
 		if (IsPlaying) {
-//			yield return new WaitForSeconds (Random.Range (MinRandomWait, MaxRandomWait));
 
 			if (_CurrentState == SPAWNING_STATE.PRE_BEFORE_SPAWN_WAIT) {
 
@@ -238,7 +213,6 @@ public class EntitySpawner : MonoBehaviour {
 				if (randomNumber < SpawnWhenLessThan) {
 
 					_CurrentSpawnedEntity = Spawn ();
-
 					_CurrentState = SPAWNING_STATE.AFTER_SPAWN_WAIT;
 
 				} else {
@@ -258,11 +232,7 @@ public class EntitySpawner : MonoBehaviour {
 											
 		}
 	}
-
-
-//	protected virtual IEnumerator SpawnWaiter(Entity e) {
-//		yield return null;
-//	}
+		
 
 	// return true when waiting, return false when immediate spawn
 	protected virtual bool SpawnWaiter(Entity e) {

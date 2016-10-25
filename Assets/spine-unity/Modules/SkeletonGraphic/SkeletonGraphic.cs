@@ -53,6 +53,7 @@ namespace Spine.Unity {
 		public bool startingLoop;
 		public float timeScale = 1f;
 		public bool freeze;
+		public bool unscaledTime;
 
 		#if UNITY_EDITOR
 		protected override void OnValidate () {
@@ -119,7 +120,13 @@ namespace Spine.Unity {
 
 		public virtual void Update () {
 			if (freeze) return;
-			Update(Time.deltaTime);
+
+			UpdateUnscaledTime ();
+			if (unscaledTime) {
+				Update (unscaledDeltaTime);
+			}else{
+				Update(Time.deltaTime);
+			}
 		}
 
 		public virtual void Update (float deltaTime) {
@@ -216,5 +223,26 @@ namespace Spine.Unity {
 		public event UpdateBonesDelegate UpdateLocal, UpdateWorld, UpdateComplete;
 		public void LateUpdate () { }
 		#endif
+
+
+		#region unscaled time
+		float previoustimeSinceStartup;
+		public float unscaledDeltaTime {
+			get;
+			private set;
+		}
+
+		void UpdateUnscaledTime() {
+
+			if (previoustimeSinceStartup <= 0)
+				previoustimeSinceStartup = Time.realtimeSinceStartup;
+
+			float realtimeSinceStartup = Time.realtimeSinceStartup;
+			unscaledDeltaTime = realtimeSinceStartup - previoustimeSinceStartup;
+			previoustimeSinceStartup = realtimeSinceStartup;
+		}
+
+		#endregion
+
 	}
 }

@@ -34,8 +34,6 @@ public class GameSaveManager : MonoBehaviour {
 		}
 	}
 
-	[SerializeField] ShopItemData _ShopItemData;
-
 	public int MockupCoin;
 
 	public bool DoReset;

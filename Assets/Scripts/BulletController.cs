@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BulletController : MonoBehaviour {
 	public Vector2 Speed = new Vector2(0,10);
+	public float Damage = 0;
 
 	public bool AffectedByLevelSpeed;
 
@@ -24,9 +25,7 @@ public class BulletController : MonoBehaviour {
 				Speed.y * Time.deltaTime, 0);
 		}
 
-
-		// HARDCODED
-		// TODO: Specify automatic out of screen?
+		// hardcoded out of area, just to make sure
 		if (this.transform.position.y > 7 || this.transform.position.y < -7) {
 			this.gameObject.SetActive (false);
 		}
@@ -37,6 +36,7 @@ public class BulletController : MonoBehaviour {
 		this.gameObject.SetActive (false);
 	}
 
+	// Remove when out of specified area
 	public void OnTriggerEnter2D(Collider2D coll) {
 		if (coll.tag == "AreaBoundary") {
 			this.gameObject.SetActive (false);

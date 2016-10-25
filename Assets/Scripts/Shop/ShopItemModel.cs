@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class ShopItemModel{
+	public string ID;
 	public string Name;
 	public string Info;
 	public string Image;

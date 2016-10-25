@@ -48,7 +48,7 @@ public class GameUIController : MonoBehaviour {
 		GameController.ResetGame ();
 		GameController.InitialGameStart ();
 		// count down start
-		CountdownUI.StartCountdown (3, 1, "GO!");
+		CountdownUI.StartCountdown (3, 0.1f, "GO!");
 	}
 
 	void OnPauseGameEvent (PauseGameEvent eve) {

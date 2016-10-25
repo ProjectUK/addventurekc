@@ -34,7 +34,9 @@ public class AircraftController : MonoBehaviour {
 
 	[Header("Super power")]
 	public GameObject ShieldObj;
+	public GameObject ShadowAircraft;
 
+	[Header("Animator")]
 	public Animator AirplaneAnimator;
 
 	[Header("X positions")]
@@ -76,7 +78,7 @@ public class AircraftController : MonoBehaviour {
 	public float MinXMovementTolerance;
 	public float CountdownStopTolerance = 0.1f;
 
-	AircraftMovementState _CurrentMovementState = AircraftMovementState.IDLE;
+	public AircraftMovementState _CurrentMovementState = AircraftMovementState.IDLE;
 	bool doStop = false;
 	float countdownStop = 0;
 
@@ -89,17 +91,35 @@ public class AircraftController : MonoBehaviour {
 	float _CurrentInvulnerableTime;
 	float _CurrentInitTime;
 
+	float _BulletDamage = 1;
+
 	// Purchased item upgrades
-	float PurchasedSpeedMultiplier = 1;
+	float _PurchasedSpeedMultiplier = 1;
+	float _PurchasedBulletDamageMultiplier = 1;
+	float _PurchasedBulletSpeedMultiplier = 1;
+
+	Vector2 INITIAL_BULLET_SPEED = new Vector2(0, 4);
+
+	float _SpeedboostPowerTime = 0;
+	float _SpeedboostMultiplier = 1;
+
+	float _SpreadGunPowerTime = 0;
+	bool _SpreadGunActive = false;
+
+	float _ShadowAircraftPowerTime = 0;
+	bool _ShadowAircraftActive = false;
 
 	#region Unity Methods
 
 	// Use this for initialization
 	void Start () {
-		BulletPool = PoolManager.Instance.CreatePool ("BulletPool", Resources.Load ("Prefabs/Bullets/PlayerBullet") as GameObject, 20, true);		
+		BulletPool = PoolManager.Instance.CreatePool ("BulletPool", Resources.Load ("Prefabs/Bullets/PlayerBullet") as GameObject, 20, true);
 
 		EventManager.Instance.AddListener<ShieldPowerEvent> (OnShieldPowerEvent);
-		EventManager.Instance.AddListener<BulletBoostEvent> (OnBulletBoostEvent);
+		EventManager.Instance.AddListener<BulletBoostPowerEvent> (OnBulletBoostEvent);
+		EventManager.Instance.AddListener<SpeedBoostPowerEvent> (OnSpeedBoostPowerEvent);
+		EventManager.Instance.AddListener<SpreadGunPowerEvent> (OnSpreadGunPowerEvent);
+		EventManager.Instance.AddListener<ShadowAircraftPowerEvent> (OnShadowAircraftPowerEvent);
 
 		// save shooting delays
 		for (int i = 0; i < Guns.Length; i++) {
@@ -137,6 +157,7 @@ public class AircraftController : MonoBehaviour {
 			if (IsPlaying) {
 				UpdateMovement ();
 				UpdateShield ();
+				UpdatePowerUps ();
 			}
 
 			yield return null;
@@ -166,11 +187,11 @@ public class AircraftController : MonoBehaviour {
 		if (_CurrentInitTime <= 0) {
 
 			if (IsPlaying && !InitialGameStarting) {
-				_XAcceleration = (Joystick.DeltaTouch.x) * TouchSpeed.x * Time.deltaTime * PurchasedSpeedMultiplier;
+				_XAcceleration = (Joystick.DeltaTouch.x) * TouchSpeed.x * Time.deltaTime * _PurchasedSpeedMultiplier * _SpeedboostMultiplier;
 				float xPos = this.transform.position.x + _XAcceleration;
 				xPos = Mathf.Clamp (xPos, MinX.position.x, MaxX.position.x);
 
-				float yAcceleration = (Joystick.DeltaTouch.y) * TouchSpeed.y * Time.deltaTime * PurchasedSpeedMultiplier;
+				float yAcceleration = (Joystick.DeltaTouch.y) * TouchSpeed.y * Time.deltaTime * _PurchasedSpeedMultiplier * _SpeedboostMultiplier;
 				float yPos = this.transform.position.y + yAcceleration;
 				yPos = Mathf.Clamp (yPos, MinY.position.y, MaxY.position.y);
 
@@ -225,6 +246,12 @@ public class AircraftController : MonoBehaviour {
 		}
 	}
 
+	void UpdatePowerUps() {
+		UpdateSpeedboostPower ();
+		UpdateSpreadGunPower ();
+		UpdateShadowAircraftPower ();
+	}
+
 	public void Init() {
 		// Turn on joystick
 		Joystick.IsRunning = true;
@@ -232,15 +259,42 @@ public class AircraftController : MonoBehaviour {
 		InputOffset = new Vector3 (Input.acceleration.x, Input.acceleration.y, Input.acceleration.z);
 		transform.position = DefaultStartPos.position;
 
-		// get purchased speed (Engine)
+		//---- Purchased items initializations
+
+		// Speed (Engine)
 		int purchasedSpeed = GameSaveManager.Instance.GetPurchaseLevel(GameConst.ITEM_ENGINE);
 		if (purchasedSpeed == 0) {
-			PurchasedSpeedMultiplier = 1f;
+			_PurchasedSpeedMultiplier = 1f;
 		}else if (purchasedSpeed == 1) {
-			PurchasedSpeedMultiplier = 1.25f;
+			_PurchasedSpeedMultiplier = 1.25f;
 		}else if (purchasedSpeed == 2) {
-			PurchasedSpeedMultiplier = 1.5f;
+			_PurchasedSpeedMultiplier = 1.5f;
 		}
+
+		// Bullet damage (Fire Power, Crows Cannon)
+		int purchasedDamage = GameSaveManager.Instance.GetPurchaseLevel(GameConst.ITEM_CROWSCANNON);
+		if (purchasedDamage == 0) {
+			_PurchasedBulletDamageMultiplier = 1f;
+		}else if (purchasedDamage == 1) {
+			_PurchasedBulletDamageMultiplier = 1.5f;
+		}else if (purchasedDamage == 2) {
+			_PurchasedBulletDamageMultiplier = 3f;
+		}
+
+		// Bullet speed (Machine Guns)
+		int purchasedBulletSpeed = GameSaveManager.Instance.GetPurchaseLevel(GameConst.ITEM_MACHINEGUNS);
+		if (purchasedBulletSpeed == 0) {
+			_PurchasedBulletSpeedMultiplier = 1f;
+		}else if (purchasedBulletSpeed == 1) {
+			_PurchasedBulletSpeedMultiplier = 1.5f;
+		}else if (purchasedBulletSpeed == 2) {
+			_PurchasedBulletSpeedMultiplier = 2f;
+		}
+		SetBulletSpeed (INITIAL_BULLET_SPEED * _PurchasedBulletSpeedMultiplier);
+
+
+		SetSpreadGunActive (false);
+		SetShadowAircraftActive (false);
 	}
 
 	public void Restart() {
@@ -257,15 +311,23 @@ public class AircraftController : MonoBehaviour {
 		}
 	}
 
+	#region Guns
+
 	void Shoot(GunModel gunModel) {
+
+		if (!gunModel.Active)
+			return;
+
 		GameObject bullet = BulletPool.Get ();
 
 		if (bullet != null) {
 			bullet.transform.position = gunModel.GunPosition.position;
 
 			BulletController bc = bullet.GetComponent<BulletController> ();
-			if (bc != null)
+			if (bc != null) {
 				bc.Speed = gunModel.BulletSpeed;
+				bc.Damage = _BulletDamage * _PurchasedBulletDamageMultiplier;
+			}
 
 			bullet.SetActive (true);
 		}
@@ -310,6 +372,35 @@ public class AircraftController : MonoBehaviour {
 		}
 	}
 
+	void SetGunDelayTime(float delayTime) {
+		for (int i = 0; i < Guns.Length; i++) {
+			GunModel currentGun = Guns [i];
+			currentGun.ShootingDelay = delayTime;
+		}
+	}
+
+	void SetBulletSpeed(Vector2 bulletSpeed) {
+		for (int i = 0; i < Guns.Length; i++) {
+			GunModel currentGun = Guns [i];
+			currentGun.BulletSpeed = new Vector2 (currentGun.BulletSpeed.x, bulletSpeed.y);
+//				bulletSpeed;
+		}
+	}
+
+	void SetGunActive(string GunID, bool isActive) {
+		for (int i = 0; i < Guns.Length; i++) {
+			GunModel currentGun = Guns [i];
+			if (Guns[i].Gun_Id == GunID) {
+				currentGun.Active = isActive;
+				return;
+			}
+		}
+	}
+
+
+	#endregion
+
+
 	#region Actions
 
 	public void Die() {
@@ -349,8 +440,7 @@ public class AircraftController : MonoBehaviour {
 		_CurrentInvulnerableTime = eve.ShieldTime;
 	}
 
-	void OnBulletBoostEvent(BulletBoostEvent eve) {
-
+	void OnBulletBoostEvent(BulletBoostPowerEvent eve) {
 		// add to all gun
 		for (int i = 0; i < Guns.Length; i++) {
 			GunModel currentGunModel = Guns [i];
@@ -360,5 +450,83 @@ public class AircraftController : MonoBehaviour {
 		}
 	}
 		
+	void OnSpeedBoostPowerEvent(SpeedBoostPowerEvent eve) {
+		_SpeedboostPowerTime = eve.BoostTime;
+	}
+
+	void OnSpreadGunPowerEvent(SpreadGunPowerEvent eve) {
+		_SpreadGunPowerTime = eve.BoostTime;
+	}
+
+	void OnShadowAircraftPowerEvent(ShadowAircraftPowerEvent eve) {
+		_ShadowAircraftPowerTime = eve.BoostTime;
+	}
+
 	#endregion
+
+	#region Powerups update
+
+	void UpdateSpeedboostPower() {
+		if (_SpeedboostPowerTime > 0) {
+			_SpeedboostPowerTime -= Time.deltaTime;
+			_SpeedboostMultiplier = 2;
+		} else {
+			_SpeedboostMultiplier = 1;
+		}
+	}
+
+	void UpdateSpreadGunPower() {
+		if (_SpreadGunPowerTime > 0) {	
+			_SpreadGunPowerTime -= Time.deltaTime;
+
+			// shooting diagonally
+
+			// turn on spreadgun
+			if (!_SpreadGunActive) {
+				SetSpreadGunActive (true);
+			}
+
+		} else {
+			// turn off spreadgun
+			if (_SpreadGunActive) {
+				SetSpreadGunActive (false);
+			}
+
+		}
+	}
+
+
+
+	void UpdateShadowAircraftPower() {
+		if (_ShadowAircraftPowerTime > 0) {
+			_ShadowAircraftPowerTime -= Time.deltaTime;
+
+			// turn on shadow aircraft
+			if (!_ShadowAircraftActive) {
+				SetShadowAircraftActive (true);
+			}
+
+		} else {
+			// turn off shadow aircraft
+			if (_ShadowAircraftActive) {
+				SetShadowAircraftActive (false);
+			}
+		}
+	}
+
+	#endregion
+
+	#region Powerups setup
+	void SetSpreadGunActive(bool setActive) { 
+		SetGunActive ("SpreadGunRight", setActive);
+		SetGunActive ("SpreadGunLeft", setActive);
+		_SpreadGunActive = setActive;
+	}
+
+	void SetShadowAircraftActive(bool setActive) {
+		ShadowAircraft.SetActive (setActive);
+		_ShadowAircraftActive = setActive;
+	}
+	#endregion
+
 }

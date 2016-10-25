@@ -46,6 +46,8 @@ public class ReceiveWakeEvent : GameEvent {
 	}
 }
 
+#region Power Up Events
+
 public class BombPowerEvent : GameEvent {
 	public Vector3 Position;
 	public BombPowerEvent(Vector3 position) {
@@ -65,14 +67,37 @@ public class CoffeePowerEvent : GameEvent {
 	}
 }
 
-public class BulletBoostEvent : GameEvent {
+public class BulletBoostPowerEvent : GameEvent {
 	public float BoostTime;
 	public float BoostDelay;
-	public BulletBoostEvent(float boostTime, float delayEffect) {
+	public BulletBoostPowerEvent(float boostTime, float delayEffect) {
 		this.BoostTime = boostTime;
 		this.BoostDelay = delayEffect;
 	}
 }
+
+public class SpeedBoostPowerEvent : GameEvent { 
+	public float BoostTime;
+	public SpeedBoostPowerEvent(float boostTime) {
+		this.BoostTime = boostTime;
+	}
+}
+
+public class SpreadGunPowerEvent : GameEvent {
+	public float BoostTime;
+	public SpreadGunPowerEvent(float boostTime) {
+		this.BoostTime = boostTime;
+	}
+}
+
+public class ShadowAircraftPowerEvent : GameEvent {
+	public float BoostTime;
+	public ShadowAircraftPowerEvent(float boostTime) {
+		this. BoostTime = boostTime;
+	}
+}
+
+#endregion
 
 public class HideBulletEvent : GameEvent {
 	public HideBulletEvent() {
@@ -85,7 +110,11 @@ public class MainMenuEvent :GameEvent {
 }
 
 public class StartGameEvent :GameEvent { 
+	public string PlayerInitial;
 	public StartGameEvent() {
+	}
+	public StartGameEvent(string playerInitial) {
+		this.PlayerInitial = playerInitial;
 	}
 }
 

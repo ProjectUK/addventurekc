@@ -152,7 +152,6 @@ public class AircraftGameController : MonoBehaviour {
 		CloudSpawner.StopSpawn();
 		CloudSpawner.HideAll();
 
-
 		// remove bullets
 		EventManager.Instance.TriggerEvent (new HideBulletEvent ());
 	}
@@ -267,6 +266,9 @@ public class AircraftGameController : MonoBehaviour {
 		Social.ReportScore ((long)TotalScore, GPGSids.leaderboard_high_scores, (bool success) => {
 			// handle success/failure	
 		});
+
+		// submit coins
+		GameSaveManager.Instance.AddCoins((int)TotalScore);
 
 
 

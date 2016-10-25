@@ -22,4 +22,12 @@
 	// Items
 	public const string ITEM_ENGINE = "Engine";
 	public const string ITEM_ALERTNESS = "Alertness";
+	public const string ITEM_CROWSCANNON = "CrowsCannon";
+	public const string ITEM_MACHINEGUNS = "MachineGuns";
+
+	// Power ups
+	public const string POWERUP_DEPTHCHARGE = "PU_DepthCharge";
+	public const string POWERUP_EXPRESSO = "PU_Expresso";
+	public const string POWERUP_COFFEECOCOON = "PU_CoffeeCocoon";
+	public const string POWERUP_COFFEEDISPENSER = "PU_CoffeeDispenser";
 }

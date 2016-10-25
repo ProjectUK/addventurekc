@@ -24,15 +24,20 @@ public class UIOMainMenu : UISliding {
 
 		MainMenu_PlayBtn.onClick.AddListener(delegate {
 			if (InputInitialField.text.Length > 0) {
+
 				AudioManager.Instance.Play("button_click", false, 1f, 0f);
-				EventManager.Instance.TriggerEvent(new StartGameEvent());
+				EventManager.Instance.TriggerEvent(new StartGameEvent(InputInitialField.text));
 
 				Hide(GameConst.INTENT_HIDE_MAINMENU_PLAY, false);
+
+
 //				MainMenu_Hide();
 //				_CurrentScreen = GameScreen.GAME;
 
 			}else{
-				NotificationWindowManager.Instance.Show("Name is empty!", "Please input your initial name");
+				NotificationWindowManager.Instance.Show(
+					"Whoa Whoa Whoa! You Forgot Your Name?!",
+					"Why the rush? Got too much coffee? :D");
 			}
 		});
 

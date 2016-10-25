@@ -69,6 +69,12 @@ public class MenuSceneController : MonoBehaviour {
 		_UIOLeaderboard.Hide (true);
 		_UIOShopMenu.Hide (true);
 
+	
+		// play BGM at the very beginning of the game
+		BGMManager.Instance.CurrentBGM = "BGM";
+		AudioManager.Instance.Play ("BGM", true, 1f, 0.5f);
+
+
 	}
 
 	public void TestLogin() {
@@ -180,6 +186,10 @@ public class MenuSceneController : MonoBehaviour {
 				_CurrentScreen = GameScreen.MAIN_MENU;
 				_UIOMainMenu.Show(false);
 
+				// play BGM
+				BGMManager.Instance.CurrentBGM = "BGM";
+				AudioManager.Instance.Play ("BGM", true, 1f, 0.5f);
+
 			} else if(eve.Message == GameConst.INTENT_HIDE_GAMEOVER_REPLAY)  {
 				// to replay
 				_CurrentScreen = GameScreen.GAME;
@@ -198,6 +208,11 @@ public class MenuSceneController : MonoBehaviour {
 			if (eve.Message == GameConst.INTENT_HIDE_PAUSE_MAINMENU) {
 				_UIOMainMenu.Show (false);
 				_CurrentScreen = GameScreen.MAIN_MENU;
+
+				// play BGM
+				BGMManager.Instance.CurrentBGM = "BGM";
+				AudioManager.Instance.Play ("BGM", true, 1f, 0.5f);
+
 			}else if (eve.Message == GameConst.INTENT_HIDE_PAUSE_RESUME) {
 				_CurrentScreen = GameScreen.GAME;
 			}
@@ -212,6 +227,11 @@ public class MenuSceneController : MonoBehaviour {
 			if (eve.Message == GameConst.INTENT_HIDE_SHOP_MAINMENU) {
 				_UIOMainMenu.Show (false);
 				_CurrentScreen = GameScreen.MAIN_MENU;
+
+				// play BGM
+				BGMManager.Instance.CurrentBGM = "BGM";
+				AudioManager.Instance.Play ("BGM", true, 1f, 0.5f);
+
 			}
 			break;
 

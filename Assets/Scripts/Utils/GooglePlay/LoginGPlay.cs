@@ -12,7 +12,13 @@ public class LoginGPlay : MonoBehaviour {
 		// authenticate user:
 		PlayGamesPlatform.Activate();
 		Social.localUser.Authenticate((bool success) => {
-			_SplashController.Running = true;
+
+			// TODO: Handle run with success and not success
+			if (success) {
+				_SplashController.Running = true;
+			}else{
+				_SplashController.Running = true;
+			}
 		});
 	}
 	

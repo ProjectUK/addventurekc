@@ -93,10 +93,9 @@ public class AudioEventListener : MonoBehaviour {
 	}
 		
 	void OnMainMenuEvent (MainMenuEvent eve) {
-		BGMManager.Instance.CurrentBGM = "";
+		BGMManager.Instance.CurrentBGM = "BGM";
+		AudioManager.Instance.Play ("BGM", true, 1f, 0.5f);
 
-
-		AudioManager.Instance.SetVolume ("BGM", 0f, 0.1f);
 		AudioManager.Instance.SetVolume ("BGM_boss", 0f, 0.1f);
 	}
 
