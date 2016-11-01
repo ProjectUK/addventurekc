@@ -123,14 +123,14 @@ public class GameSaveManager : MonoBehaviour {
 				return false;
 			} else {
 				//toggle first play
-				SetFirstPlay (false);
+//				SetFirstPlay (false);
 
 				return true;
 			}
 		} else {
 
 			//toggle first play
-			SetFirstPlay (false);
+//			SetFirstPlay (false);
 
 			return true;
 		}

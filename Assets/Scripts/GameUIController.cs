@@ -19,6 +19,8 @@ public class GameUIController : MonoBehaviour {
 		EventManager.Instance.AddListener<StartGameEvent> (OnStartGameEvent);
 		EventManager.Instance.AddListener<PauseGameEvent> (OnPauseGameEvent);
 		EventManager.Instance.AddListener<ResumeGameEvent> (OnResumeGameEvent);
+
+		GameController.StoryOverlay.ScrollingStory.OnEnd += Handle_OnStoryEnd;
 	}
 		
 	void Handle_OnCountEnd ()
@@ -26,29 +28,36 @@ public class GameUIController : MonoBehaviour {
 		GameController.StartGame ();
 	}
 
-//	public void PauseGame() {
-//		GameController.PauseGame ();
-//	}
-//
-//	public void StopGame() {
-//		GameController.StopGame ();
-//	}
+	void Handle_OnStoryEnd () {
+		GameController.HideStory ();
+		StartCountdown ();
+	}
 
 	public void TestSpawn() {
 		EnemySp.Spawn ();
 	}
 
-//	public void TestBack() {
-//		MenuSceneCtrl.MainMenu_Show ();
-//	}
+	void StartCountdown() {
+		CountdownUI.StartCountdown (3, 0.65f, "GO!");
+	}
 
 	#region Event Listener
 
 	void OnStartGameEvent (StartGameEvent eve) {
 		GameController.ResetGame ();
 		GameController.InitialGameStart ();
-		// count down start
-		CountdownUI.StartCountdown (3, 0.65f, "GO!");
+
+
+		// first start? then show story
+		if (GameSaveManager.Instance.IsFirstPlay ()) {
+			// show story first
+			GameController.ShowStory();
+		} else {
+			GameController.HideStory();
+			// immediately play countdown
+			StartCountdown ();
+		}
+
 	}
 
 	void OnPauseGameEvent (PauseGameEvent eve) {

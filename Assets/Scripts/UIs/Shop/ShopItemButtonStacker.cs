@@ -4,9 +4,10 @@ using System.Collections;
 
 public class ShopItemButtonStacker : MonoBehaviour {
 
-	const string BUTTON_PREFAB = "Prefabs/UIs/ShopItem";
+	const string BUTTON_PREFAB = "Prefabs/UIs/Cabinet";
 
-	ShopItemButton[] _ShopItems;
+	ShopCabinet[] _ShopCabinets;
+
 	RectTransform _RectTransform;
 
 	[SerializeField] ShopItemData _ShopItemData;
@@ -21,35 +22,42 @@ public class ShopItemButtonStacker : MonoBehaviour {
 	}
 
 	IEnumerator LoadItemsRoutine() {
+		int itItem = 0;
+
+		GameObject ShopCabinetObj = null;
+		ShopCabinet shopCabinet = null;
+
 		for (int itShopItem = 0; itShopItem < _ShopItemData.ShopItems.Count; itShopItem++) {
 
 			ShopItemModel shopItemModel = _ShopItemData.ShopItems [itShopItem];
 
-			GameObject ShopButton = Instantiate (Resources.Load (BUTTON_PREFAB) as GameObject);
-			ShopButton.transform.SetParent(this.transform);
+			if (itItem == 0) {
 
-			RectTransform rt = ShopButton.GetComponent<RectTransform> ();
-			rt.localScale = new Vector3 (1, 1, 1);
-			rt.sizeDelta = new Vector2 (0, rt.sizeDelta.y);
+				ShopCabinetObj = Instantiate (Resources.Load (BUTTON_PREFAB) as GameObject);
+				ShopCabinetObj.transform.SetParent (this.transform);
+				RectTransform rt = ShopCabinetObj.GetComponent<RectTransform> ();
+				rt.localScale = new Vector3 (1, 1, 1);
+				rt.sizeDelta = new Vector2 (rt.sizeDelta.x, rt.sizeDelta.y);
 
-			ShopItemButton sib = ShopButton.GetComponent<ShopItemButton> ();
+				shopCabinet = ShopCabinetObj.GetComponent<ShopCabinet> ();
 
-			//TODO: Image
-//			sib.ItemImage.....
-			sib.ShopItem = shopItemModel;
-			//			sib.Prices = shopItemModel.Prices;
-			sib.SetImage (shopItemModel.Image);
-			sib.DetailsText.text = shopItemModel.Info;
-			sib.NameText.text = shopItemModel.Name;
+				shopCabinet.Item1.ShopItem = shopItemModel;
+				shopCabinet.Item1.Init ();
+			}else{
+				shopCabinet.Item2.ShopItem = shopItemModel;
+				shopCabinet.Item2.Init ();
+			}
 
-			sib.Init ();
-
-
-
-
+			if (itItem < ShopCabinet.MAX_ITEM-1) {
+				itItem++;
+			}else{
+				itItem = 0;
+			}
+				
 		}
+			
+		_ShopCabinets = GetComponentsInChildren<ShopCabinet> ();
 
-		_ShopItems = GetComponentsInChildren<ShopItemButton> ();
 		yield return null;
 
 		_IsItemLoaded = true;
@@ -60,8 +68,8 @@ public class ShopItemButtonStacker : MonoBehaviour {
 			float prevHeight = 0;
 			float prevYPos = 0;
 			float totalHeight = 0;
-			for (int i = 0; i < _ShopItems.Length; i++) {
-				ShopItemButton button = _ShopItems [i];
+			for (int i = 0; i < _ShopCabinets.Length; i++) {
+				ShopCabinet button = _ShopCabinets [i];
 				button.SetPosition (new Vector2 (0, -prevHeight + prevYPos));
 				
 				prevHeight = button.GetSize ().y;

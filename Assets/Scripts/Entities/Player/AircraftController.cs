@@ -4,9 +4,12 @@ using System.Collections.Generic;
 
 public class AircraftController : MonoBehaviour {
 
+	public const float ERROR_DISTANCE = 0.2f;
+
 	public enum ControlMethod
 	{
-		SWIPE
+		SWIPE,
+		TAP
 	}
 
 	public enum AircraftMovementState
@@ -63,7 +66,6 @@ public class AircraftController : MonoBehaviour {
 
 	GameObjectPool BulletPool;
 
-	Coroutine ShootingRoutine;
 
 	// delegates
 	public delegate void _OnExploding();
@@ -80,8 +82,6 @@ public class AircraftController : MonoBehaviour {
 	public float CountdownStopTolerance = 0.1f;
 
 	public AircraftMovementState _CurrentMovementState = AircraftMovementState.IDLE;
-	bool doStop = false;
-	float countdownStop = 0;
 
 	List<Coroutine> _ShootingRoutine = new List<Coroutine>();
 
@@ -191,22 +191,65 @@ public class AircraftController : MonoBehaviour {
 	void UpdateMovement() {
 		if (_CurrentInitTime <= 0) {
 
-			if (IsPlaying && !InitialGameStarting) {
-				_XAcceleration = (Joystick.DeltaTouch.x) * TouchSpeed.x * Time.deltaTime * _PurchasedSpeedMultiplier * _SpeedboostMultiplier;
-				float xPos = this.transform.position.x + _XAcceleration;
-				xPos = Mathf.Clamp (xPos, MinX.position.x, MaxX.position.x);
+			if (Control == ControlMethod.SWIPE) {
+				if (IsPlaying && !InitialGameStarting) {
+					_XAcceleration = (Joystick.DeltaTouch.x) * TouchSpeed.x * Time.deltaTime * _PurchasedSpeedMultiplier * _SpeedboostMultiplier;
+					float xPos = this.transform.position.x + _XAcceleration;
+					xPos = Mathf.Clamp (xPos, MinX.position.x, MaxX.position.x);
+					
+					float yAcceleration = (Joystick.DeltaTouch.y) * TouchSpeed.y * Time.deltaTime * _PurchasedSpeedMultiplier * _SpeedboostMultiplier;
+					float yPos = this.transform.position.y + yAcceleration;
+					yPos = Mathf.Clamp (yPos, MinY.position.y, MaxY.position.y);
+					
+					Vector3 position = new Vector3 (
+						xPos,
+						yPos,
+						this.transform.position.z);
+					
+					transform.position = position;
+				}
+			}else if (Control == ControlMethod.TAP) {
+				if (IsPlaying && !InitialGameStarting) {
 
-				float yAcceleration = (Joystick.DeltaTouch.y) * TouchSpeed.y * Time.deltaTime * _PurchasedSpeedMultiplier * _SpeedboostMultiplier;
-				float yPos = this.transform.position.y + yAcceleration;
-				yPos = Mathf.Clamp (yPos, MinY.position.y, MaxY.position.y);
+					if (Input.GetMouseButton (0)) {
 
-				Vector3 position = new Vector3 (
-					xPos,
-					yPos,
-					this.transform.position.z);
+						Vector2 targetPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
-				transform.position = position;
+						float deltaX = targetPosition.x - this.transform.position.x;
+						float deltaY = targetPosition.y - this.transform.position.y;
+
+						// prevent too close
+						if (Mathf.Abs (deltaX) > ERROR_DISTANCE || Mathf.Abs (deltaY) > ERROR_DISTANCE) {
+							float angle = Mathf.Atan2 (deltaY, deltaX);
+							
+							float speedX = Mathf.Cos (angle) * 1f;
+							float speedY = Mathf.Sin (angle) * 1f;
+							
+							_XAcceleration = (speedX) * TouchSpeed.x * Time.deltaTime * _PurchasedSpeedMultiplier * _SpeedboostMultiplier;
+							float xPos = this.transform.position.x + _XAcceleration;
+							xPos = Mathf.Clamp (xPos, MinX.position.x, MaxX.position.x);
+							
+							float yAcceleration = (speedY) * TouchSpeed.y * Time.deltaTime * _PurchasedSpeedMultiplier * _SpeedboostMultiplier;
+							float yPos = this.transform.position.y + yAcceleration;
+							yPos = Mathf.Clamp (yPos, MinY.position.y, MaxY.position.y);
+							
+							Vector3 position = new Vector3 (
+								                   xPos,
+								                   yPos,
+								                   this.transform.position.z);
+							
+							transform.position = position;
+						} else {
+							_XAcceleration = 0;
+						}
+
+					} else {
+						_XAcceleration = 0;
+					}
+
+				}
 			}
+
 		} else {
 			_CurrentInitTime -= Time.deltaTime;
 		}
@@ -259,8 +302,15 @@ public class AircraftController : MonoBehaviour {
 	}
 
 	public void Init() {
-		// Turn on joystick
-		Joystick.IsRunning = true;
+
+		if (Control == ControlMethod.SWIPE) {
+			// Turn on joystick
+			Joystick.IsRunning = true;
+		} else {
+			// Turn off joystick
+			Joystick.IsRunning = false;
+		}
+
 
 		InputOffset = new Vector3 (Input.acceleration.x, Input.acceleration.y, Input.acceleration.z);
 		transform.position = DefaultStartPos.position;
@@ -390,7 +440,6 @@ public class AircraftController : MonoBehaviour {
 		for (int i = 0; i < Guns.Length; i++) {
 			GunModel currentGun = Guns [i];
 			currentGun.BulletSpeed = new Vector2 (currentGun.BulletSpeed.x, bulletSpeed.y);
-//				bulletSpeed;
 		}
 	}
 
@@ -420,9 +469,6 @@ public class AircraftController : MonoBehaviour {
 
 		if (OnExploding != null)
 			OnExploding ();		
-
-		if (ShootingRoutine != null)
-			StopCoroutine (ShootingRoutine);
 
 		// make it unmovable
 		IsPlaying = false;

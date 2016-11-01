@@ -152,4 +152,11 @@ public class BuyItemEvent:GameEvent{
 	}
 }
 
+public class DetailItemEvent: GameEvent{ 
+	public ShopItemModel ShopItem;
+	public DetailItemEvent(ShopItemModel shopItem) {
+		this.ShopItem = shopItem;
+	}
+}
+
 #endregion

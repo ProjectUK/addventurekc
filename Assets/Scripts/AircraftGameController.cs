@@ -23,6 +23,7 @@ public class AircraftGameController : MonoBehaviour {
 	public ItemRemainings LifeUI;
 	public Text ScoreText;
 	public PowerupInfoUI PowerupInfo;
+	public UIOStory StoryOverlay;
 
 	[Header("Wake Meter Values")]
 	public float MaxWakeValue;
@@ -59,7 +60,6 @@ public class AircraftGameController : MonoBehaviour {
 		EventManager.Instance.AddListener<ReceiveWakeEvent> (OnReceiveWakeEvent);
 		EventManager.Instance.AddListener<EnemyDeadEvent> (OnEnemyDeadEvent);
 
-//		LifeRemaining = MaxLife;
 	}
 	
 	// Update is called once per frame
@@ -237,6 +237,21 @@ public class AircraftGameController : MonoBehaviour {
 	}
 
 
+	#region story
+
+	public void ShowStory() {
+		StoryOverlay.Show (true);
+		StoryOverlay.ScrollingStory.Running = true;
+	}
+
+	public void HideStory() {
+		StoryOverlay.Hide (true);
+		StoryOverlay.ScrollingStory.Running = false;
+	}
+
+	#endregion
+
+
 	#region delegates
 	void OnAircraftExploding() {
 
@@ -270,7 +285,7 @@ public class AircraftGameController : MonoBehaviour {
 		// submit coins
 		GameSaveManager.Instance.AddCoins((int)TotalScore);
 
-
+		GameSaveManager.Instance.SetFirstPlay (false);
 
 	}
 
