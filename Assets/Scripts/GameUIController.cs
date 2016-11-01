@@ -21,6 +21,7 @@ public class GameUIController : MonoBehaviour {
 		EventManager.Instance.AddListener<ResumeGameEvent> (OnResumeGameEvent);
 
 		GameController.StoryOverlay.ScrollingStory.OnEnd += Handle_OnStoryEnd;
+		GameController.Tutorial.OnEnd += Handle_OnTutorialEnd;
 	}
 		
 	void Handle_OnCountEnd ()
@@ -30,6 +31,10 @@ public class GameUIController : MonoBehaviour {
 
 	void Handle_OnStoryEnd () {
 		GameController.HideStory ();
+		GameController.ShowTutorial ();
+	}
+
+	void Handle_OnTutorialEnd () {
 		StartCountdown ();
 	}
 

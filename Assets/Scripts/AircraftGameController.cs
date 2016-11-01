@@ -24,6 +24,7 @@ public class AircraftGameController : MonoBehaviour {
 	public Text ScoreText;
 	public PowerupInfoUI PowerupInfo;
 	public UIOStory StoryOverlay;
+	public TutorialPage Tutorial;
 
 	[Header("Wake Meter Values")]
 	public float MaxWakeValue;
@@ -247,6 +248,18 @@ public class AircraftGameController : MonoBehaviour {
 	public void HideStory() {
 		StoryOverlay.Hide (true);
 		StoryOverlay.ScrollingStory.Running = false;
+	}
+
+	#endregion
+
+	#region tutorial
+
+	public void ShowTutorial() {
+		Tutorial.Show ();
+	}
+
+	public void HideTutorial() {
+		Tutorial.Hide ();
 	}
 
 	#endregion
