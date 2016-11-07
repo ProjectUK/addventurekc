@@ -149,29 +149,31 @@ public class EntitySpawner : MonoBehaviour {
 
 		if (model != null) {
 			string poolName = model.PoolName;
-			GameObject spawnedEntity = PoolManager.Instance.GetPool (poolName).Get ();
-			if (spawnedEntity != null) {
-				
-				Entity e = spawnedEntity.GetComponent<Entity> ();
-				
-				if (e != null) {
-					// get random position
-					int randomPosIndex = Random.Range(0, Positions.Length-1);
+			if (poolName != null && poolName != "") {
+				GameObject spawnedEntity = PoolManager.Instance.GetPool (poolName).Get ();
+				if (spawnedEntity != null) {
 					
-					Vector3 randomPosition = Positions [randomPosIndex].position;
-					Vector3 endPosition = new Vector3 (
-						randomPosition.x + Random.Range(MinOffset.x, MaxOffset.x),
-						randomPosition.y + Random.Range(MinOffset.y, MaxOffset.y),
-						randomPosition.z + Random.Range(MinOffset.z, MaxOffset.z));
-					e.transform.position = randomPosition;
-					e.gameObject.SetActive (true);
+					Entity e = spawnedEntity.GetComponent<Entity> ();
 					
-					OnEntitySpawned (e);
-					
-					e.Init ();
-
-					SpawnCount++;
-					return e;
+					if (e != null) {
+						// get random position
+						int randomPosIndex = Random.Range(0, Positions.Length-1);
+						
+						Vector3 randomPosition = Positions [randomPosIndex].position;
+						Vector3 endPosition = new Vector3 (
+							randomPosition.x + Random.Range(MinOffset.x, MaxOffset.x),
+							randomPosition.y + Random.Range(MinOffset.y, MaxOffset.y),
+							randomPosition.z + Random.Range(MinOffset.z, MaxOffset.z));
+						e.transform.position = randomPosition;
+						e.gameObject.SetActive (true);
+						
+						OnEntitySpawned (e);
+						
+						e.Init ();
+						
+						SpawnCount++;
+						return e;
+					}
 				}
 			}
 			

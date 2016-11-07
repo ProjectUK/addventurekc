@@ -8,6 +8,13 @@ public class GameUIController : MonoBehaviour {
 	public Countdown CountdownUI;
 	public MenuSceneController MenuSceneCtrl;
 
+	public bool IsPlaying{
+		get{
+			return _IsPlaying;
+		}
+	}
+	bool _IsPlaying;
+
 	// Use this for initialization
 	void Start () {
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
@@ -27,6 +34,7 @@ public class GameUIController : MonoBehaviour {
 	void Handle_OnCountEnd ()
 	{
 		GameController.StartGame ();
+		_IsPlaying = true;
 	}
 
 	void Handle_OnStoryEnd () {
@@ -49,9 +57,10 @@ public class GameUIController : MonoBehaviour {
 	#region Event Listener
 
 	void OnStartGameEvent (StartGameEvent eve) {
+		_IsPlaying = false;
+
 		GameController.ResetGame ();
 		GameController.InitialGameStart ();
-
 
 		// first start? then show story
 		if (GameSaveManager.Instance.IsFirstPlay ()) {

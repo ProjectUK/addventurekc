@@ -303,6 +303,8 @@ public class AircraftController : MonoBehaviour {
 
 	public void Init() {
 
+		_XAcceleration = 0;
+
 		if (Control == ControlMethod.SWIPE) {
 			// Turn on joystick
 			Joystick.IsRunning = true;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using GooglePlayGames;
 
 public class UIOMainMenu : UISliding {
 
@@ -43,7 +44,9 @@ public class UIOMainMenu : UISliding {
 
 		MainMenu_LeaderboardBtn.onClick.AddListener (delegate {
 			AudioManager.Instance.Play("button_click", false, 1f, 0f);
-			Social.Active.ShowLeaderboardUI();
+			Debug.Log("LEADERBOARD");
+//			Social.Active.ShowLeaderboardUI();
+			((PlayGamesPlatform)Social.Active).ShowLeaderboardUI();
 		});
 
 		MainMenu_ShopBtn.onClick.AddListener (delegate {

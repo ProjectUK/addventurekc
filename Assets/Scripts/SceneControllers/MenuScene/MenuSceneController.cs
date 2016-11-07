@@ -92,7 +92,7 @@ public class MenuSceneController : MonoBehaviour {
 		// detect pause button
 		if (Input.GetKeyDown(KeyCode.Escape)) {
 			if (_CurrentScreen == GameScreen.GAME) {
-				if (GmUIController.GameController.IsPlaying) {
+				if (GmUIController.IsPlaying) {
 					EventManager.Instance.TriggerEvent (new PauseGameEvent ());
 					_UIOPauseMenu.Show(false);
 
@@ -113,7 +113,6 @@ public class MenuSceneController : MonoBehaviour {
 
 				_CurrentScreen = GameScreen.MAIN_MENU;
 			}else if (_CurrentScreen == GameScreen.LEADERBOARD) {
-
 				// back to main menu
 				_UIOMainMenu.Show(false);
 

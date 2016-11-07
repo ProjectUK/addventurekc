@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using GooglePlayGames;
 
 public class UIOGameOverMenu : UISliding {
 
@@ -39,7 +40,8 @@ public class UIOGameOverMenu : UISliding {
 
 		GameOver_LeaderboardBtn.onClick.AddListener (delegate {
 			AudioManager.Instance.Play("button_click", false, 1f, 0f);
-			Social.Active.ShowLeaderboardUI();
+//			Social.Active.ShowLeaderboardUI();
+			((PlayGamesPlatform)Social.Active).ShowLeaderboardUI();
 		});
 
 		GameOver_ShareBtn.onClick.AddListener (delegate() {

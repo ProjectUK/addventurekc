@@ -79,6 +79,9 @@ public class BuyNotification : MonoBehaviour {
 	PriceModel _CurrentPriceModel;
 
 	void UpdateCurrentPrice() {
+
+		bool eligibleToBuy = false;
+
 		// Set the price if it has multiple price count
 		if (ShopItem.Prices.Count > 1) {
 
@@ -87,37 +90,40 @@ public class BuyNotification : MonoBehaviour {
 
 			// reached highest level
 			if (_CurrentPriceModel.Level <= -1) {
-				BuyButton.gameObject.SetActive(false);
+				eligibleToBuy = false;
+				PriceText.text = "";
 			} else {
-				BuyButton.gameObject.SetActive(true);
+				eligibleToBuy = true;
+				// set price
+				PriceText.text = _CurrentPriceModel.Price.ToString ();
 			}
 
-			// set price
-			PriceText.text = _CurrentPriceModel.Price.ToString ();
-
 		} else {
-			// cek udah beli aja karena cuma ada 1 level
+			// cek already purchased single priced (not upgrade-able item)
 
 			_CurrentPriceModel = ShopItem.GetPurchasedLevel (0);
 
 			bool purchased = GameSaveManager.Instance.CheckPurchase (ShopItem.ID);
 			if (purchased) {
-				BuyButton.gameObject.SetActive(false);
+				eligibleToBuy = false;
 				PriceText.text = "";
 			} else {
-				BuyButton.gameObject.SetActive(true);
+				eligibleToBuy = true;
 				PriceText.text = _CurrentPriceModel.Price.ToString ();
 			}
-
 		}
 
-		// set coin actives
-		int currentCoin = GameSaveManager.Instance.GetCoins ();
-		if (currentCoin >= _CurrentPriceModel.Price) {
-			BuyButton.gameObject.SetActive (true);
-		} else {
-			BuyButton.gameObject.SetActive (false);
+		// check price
+		if (eligibleToBuy) {
+			int currentCoin = GameSaveManager.Instance.GetCoins ();
+			if (currentCoin >= _CurrentPriceModel.Price) {
+				eligibleToBuy = true;
+			} else {
+				eligibleToBuy = false;
+			}
 		}
+
+		BuyButton.gameObject.SetActive (eligibleToBuy);
 
 	}
 }

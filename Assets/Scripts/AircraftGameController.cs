@@ -7,8 +7,8 @@ using UnityEngine.SocialPlatforms;
 public class AircraftGameController : MonoBehaviour {
 
 	public bool IsPlaying = false;
+	public bool IsDecreaseWake = false;
 	private bool _TmpPlaying;
-
 
 	[Header("Object References")]
 	public AircraftController AircraftObject;
@@ -103,7 +103,7 @@ public class AircraftGameController : MonoBehaviour {
 	}
 
 	void UpdateWakeMeter() {
-		if (CurrentWakeValue >= 0 && IsPlaying) {
+		if (CurrentWakeValue >= 0 && IsDecreaseWake) {
 			CurrentWakeValue -= WakeDecreasePerSecond * Blackboard.Instance.WakeDecreaseMultiplier * Time.deltaTime;
 			
 			if (CurrentWakeValue < 0) {
@@ -116,13 +116,10 @@ public class AircraftGameController : MonoBehaviour {
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
-
-
 	public void ResetGame() {
 
 		// Get from purchases
 		int purchasedLifeLevel = GameSaveManager.Instance.GetPurchaseLevel(GameConst.ITEM_ALERTNESS);
-		Debug.Log ("purchased life:" + purchasedLifeLevel);
 		if (purchasedLifeLevel == 0) {
 			MaxLife = 1;
 		}else if (purchasedLifeLevel == 1) {
@@ -179,6 +176,7 @@ public class AircraftGameController : MonoBehaviour {
 
 		// let the game begins!
 		IsPlaying = true;
+		IsDecreaseWake = true;
 	}
 
 	//TODO: For what?? Gameover?
@@ -208,6 +206,7 @@ public class AircraftGameController : MonoBehaviour {
 
 	public void InitialGameStart() {
 		AircraftObject.InitialGameStarting = true;
+		IsDecreaseWake = false;
 		AircraftObject.Init ();
 		ResumeGame ();
 		ResetGame ();

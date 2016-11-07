@@ -24,7 +24,13 @@
 
 public static class GPGSids
 {
+        public const string achievement_first_flight = "CgkIx5fC3skGEAIQAg"; // <GPGSID>
         public const string leaderboard_high_scores = "CgkIx5fC3skGEAIQAA"; // <GPGSID>
+        public const string achievement_second_flight = "CgkIx5fC3skGEAIQAw"; // <GPGSID>
+        public const string achievement_fourth_flight = "CgkIx5fC3skGEAIQBQ"; // <GPGSID>
+        public const string achievement_third_flight = "CgkIx5fC3skGEAIQBA"; // <GPGSID>
+        public const string achievement_fifth_flight = "CgkIx5fC3skGEAIQBg"; // <GPGSID>
+        public const string event_test_event_1 = "CgkIx5fC3skGEAIQCA"; // <GPGSID>
 
 }
 
