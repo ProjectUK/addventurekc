@@ -61,8 +61,12 @@ public class AircraftController : MonoBehaviour {
 
 	public Vector3 TouchSpeed;
 
+	[Header("Object References")]
+	[SerializeField] GameObject Propeller;
+
 	[Header("Gun")]
 	public GunModel[] Guns;
+
 
 	GameObjectPool BulletPool;
 
@@ -366,6 +370,7 @@ public class AircraftController : MonoBehaviour {
 		_WasHit = false;
 		_CurrentInvulnerableTime = 0;
 		AirplaneAnimator.SetBool("fall", false);
+		Propeller.gameObject.SetActive (true);
 
 		_CurrentInvulnerableTime = InitInvulnerableTime;
 		_CurrentInitTime = InitTime;
@@ -492,6 +497,7 @@ public class AircraftController : MonoBehaviour {
 			Tinker.ParticleManager.Instance.Spawn ("Explosion", this.transform.position);
 			// play exploded animation
 			AirplaneAnimator.SetBool("fall", true);
+			Propeller.gameObject.SetActive(false);
 			
 			StartCoroutine(WaitAndHide(0.2f));
 		}
