@@ -227,7 +227,7 @@ public class AircraftGameController : MonoBehaviour {
 		yield return new WaitForSeconds (waitTime);
 
 		// show character again
-		AircraftObject.gameObject.SetActive (true);
+//		AircraftObject.gameObject.SetActive (true);
 
 		// reset states
 		AircraftObject.Restart ();

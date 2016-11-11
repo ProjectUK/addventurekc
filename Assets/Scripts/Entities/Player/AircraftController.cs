@@ -113,6 +113,9 @@ public class AircraftController : MonoBehaviour {
 	float _LaserPowerTime = 0;
 	bool _LaserActive = false;
 
+	Collider2D _Collider;
+	bool _WasHit = false;
+
 	#region Unity Methods
 
 	// Use this for initialization
@@ -131,6 +134,8 @@ public class AircraftController : MonoBehaviour {
 			float delay = Guns [i].ShootingDelay;
 			_TmpShootingDelays.Add (delay);
 		}
+
+		_Collider = GetComponent<Collider2D> ();
 
 	}
 
@@ -357,6 +362,11 @@ public class AircraftController : MonoBehaviour {
 	}
 
 	public void Restart() {
+		_Collider.enabled = true;
+		_WasHit = false;
+		_CurrentInvulnerableTime = 0;
+		AirplaneAnimator.SetBool("fall", false);
+
 		_CurrentInvulnerableTime = InitInvulnerableTime;
 		_CurrentInitTime = InitTime;
 
@@ -469,14 +479,23 @@ public class AircraftController : MonoBehaviour {
 
 	public void Explode (){
 
-		if (OnExploding != null)
-			OnExploding ();		
+		if (!_WasHit) {
+			_WasHit = true;
+			Debug.Log ("Exploding");
+			
+			if (OnExploding != null)
+				OnExploding ();		
+			
+			// make it unmovable
+			IsPlaying = false;
+			
+			Tinker.ParticleManager.Instance.Spawn ("Explosion", this.transform.position);
+			// play exploded animation
+			AirplaneAnimator.SetBool("fall", true);
+			
+			StartCoroutine(WaitAndHide(0.2f));
+		}
 
-		// make it unmovable
-		IsPlaying = false;
-
-		Tinker.ParticleManager.Instance.Spawn ("Explosion", this.transform.position);
-		StartCoroutine(WaitAndHide(0.2f));
 
 	}
 	#endregion
@@ -487,7 +506,10 @@ public class AircraftController : MonoBehaviour {
 		if (OnExploded != null) {
 			OnExploded ();
 		}
-		this.gameObject.SetActive (false);
+
+//		this.gameObject.SetActive (false);
+		_Collider.enabled = false;
+
 	}
 
 	#region Event Listeners

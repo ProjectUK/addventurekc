@@ -1,82 +1,110 @@
 
 skeleton.png
-size: 384,350
+size: 686,351
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+asep
+  rotate: false
+  xy: 549, 4
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+left06
+  rotate: false
+  xy: 2, 55
+  size: 268, 294
+  orig: 268, 294
+  offset: 0, 0
+  index: -1
 plane1_0000_Group-8
-  rotate: true
-  xy: 270, 71
+  rotate: false
+  xy: 600, 238
   size: 64, 111
   orig: 64, 111
   offset: 0, 0
   index: -1
 plane1_0001_Group-15
   rotate: false
-  xy: 270, 5
+  xy: 418, 14
   size: 79, 64
   orig: 79, 64
   offset: 0, 0
   index: -1
 plane1_0002_tail
-  rotate: true
-  xy: 2, 2
+  rotate: false
+  xy: 666, 301
   size: 10, 48
   orig: 10, 48
   offset: 0, 0
   index: -1
 plane1_0003_LOGO
-  rotate: true
-  xy: 330, 300
+  rotate: false
+  xy: 499, 29
   size: 48, 49
   orig: 48, 49
   offset: 0, 0
   index: -1
 plane1_0004_Group-19
-  rotate: true
-  xy: 270, 137
+  rotate: false
+  xy: 596, 114
   size: 88, 112
   orig: 88, 112
   offset: 0, 0
   index: -1
 plane1_0005_body
   rotate: false
-  xy: 2, 61
+  xy: 272, 62
   size: 144, 287
   orig: 144, 287
   offset: 0, 0
   index: -1
 plane1_0006_right-wing
   rotate: false
-  xy: 148, 227
+  xy: 418, 228
   size: 180, 121
   orig: 180, 121
   offset: 0, 0
   index: -1
 plane1_0007_left-wing
-  rotate: true
-  xy: 148, 49
+  rotate: false
+  xy: 418, 106
   size: 176, 120
   orig: 176, 120
   offset: 0, 0
   index: -1
 plane1_0008_right-tail
   rotate: false
-  xy: 2, 14
+  xy: 62, 8
   size: 71, 45
   orig: 71, 45
   offset: 0, 0
   index: -1
 plane1_0009_left-tail
   rotate: false
-  xy: 75, 14
+  xy: 135, 8
   size: 71, 45
   orig: 71, 45
   offset: 0, 0
   index: -1
+propeller
+  rotate: false
+  xy: 418, 80
+  size: 129, 24
+  orig: 129, 24
+  offset: 0, 0
+  index: -1
+rotor
+  rotate: false
+  xy: 2, 2
+  size: 58, 51
+  orig: 58, 51
+  offset: 0, 0
+  index: -1
 tail _opy
   rotate: false
-  xy: 330, 262
+  xy: 208, 17
   size: 39, 36
   orig: 39, 36
   offset: 0, 0

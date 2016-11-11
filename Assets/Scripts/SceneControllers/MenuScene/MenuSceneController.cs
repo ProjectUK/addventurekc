@@ -144,7 +144,7 @@ public class MenuSceneController : MonoBehaviour {
 		_GameOverCount++;
 		float currTime = 0;
 
-		float waitTime = 2f;
+		float waitTime = 3f;
 
 		// wait some moments while slowing down
 		while (currTime <= waitTime) { 
